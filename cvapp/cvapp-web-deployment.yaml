@@ -24,6 +24,5 @@ spec:
             - name: API_URL
               valueFrom:
                 configMapKeyRef:
-                name: cvapp-configmap
-                key: axios
-      
+                  name: cvapp-configmap
+                  key: axios
