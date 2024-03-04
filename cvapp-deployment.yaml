@@ -27,6 +27,11 @@ spec:
                 secretKeyRef:
                   name: cvapp-secret
                   key: db-pass
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: db-user
           volumeMounts:
             - mountPath: /mongo/data  
               name: cvapp-data
@@ -41,10 +46,10 @@ spec:
           awsElasticBlockStore:
             volumeID: vol-0feab5ad6c0da1c25
             fsType: ext4
-      initContainers:
-        - name: busybox
-          image: busybox:latest
-          command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
-          volumeMounts:
-            - name: cvapp-data  
-              mountPath: /mongo/data
+      # initContainers:
+      #   - name: busybox
+      #     image: busybox:latest
+      #     command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
+      #     volumeMounts:
+      #       - name: cvapp-data  
+      #         mountPath: /mongo/data
