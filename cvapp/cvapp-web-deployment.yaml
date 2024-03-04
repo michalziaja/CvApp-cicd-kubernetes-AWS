@@ -19,7 +19,7 @@ spec:
           image: michalziaja/cvapp-web
           ports:
             - name: cvapp-web-port
-              containerPort: 8001
+              containerPort: 80
           env:
             - name: API_URL
               valueFrom:
