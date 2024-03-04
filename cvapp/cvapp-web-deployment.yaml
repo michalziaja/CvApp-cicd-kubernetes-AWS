@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cvapp-web
+    app: cvapp-web
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cvapp-web
+  template:
+    metadata:
+      labels:
+        app: cvapp-web
+    spec:
+      containers:
+        - name: cvapp-web
+          image: michalziaja/cvapp-web
+          ports:
+            - name: cvapp-web-port
+              containerPort: 8001
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                name: cvapp-configmap
+                key: axios
+      

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cvapp-db
+  labels:
+    app: cvapp-db
+spec:
+  ports:
+    - port: 27017
+      targetPort: cvapp-db-port
+      protocol: TCP
+  selector:
+    app: cvapp-db
+  type: ClusterIP
