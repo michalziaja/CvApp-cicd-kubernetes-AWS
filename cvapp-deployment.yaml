@@ -18,7 +18,7 @@ spec:
       containers:
         - name: cvapp-db
           image: mongo
-          restart: always
+          
           ports:
             - name: cvapp-db
               containerPort: 27017
