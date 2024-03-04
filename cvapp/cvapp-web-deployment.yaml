@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: cvapp-web
     app: cvapp-web
-
 spec:
   replicas: 1
   selector:
