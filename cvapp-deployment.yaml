@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cvapp-db
+  labels:
+    app: cvapp-db
+
+spec:
+  selector:
+    matchLabels:
+      app: cvapp-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cvapp-db
+    spec:
+      containers:
+        - name: cvapp-db
+          image: mongo
+          restart: always
+          ports:
+            - name: cvapp-db
+              containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: db-pass
+          volumeMounts:
+            - mounthPath: /mongo/data
+              name: cvapp-data
+      nodeSelector:
+        zone: eu-central-1a
+      volumes:
+        - name: cvapp-data
+          awsElasticBlockStore:
+            volumeID: vol-0169398415567ad0c
+            fsType: ext4
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
+          volumeMounts:
+            - name: vpro-db-data
+              mountPath: /mongo/data
