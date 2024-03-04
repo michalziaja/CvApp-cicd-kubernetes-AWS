@@ -21,33 +21,33 @@ spec:
             - name: cvapp-api-port
               containerPort: 8000
           env:
-          - name: JWT_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: cvapp-secret
-                key: jwt-key
-          - name: JWT_REFRESH_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: cvapp-secret
-                key: jwt-ref-key
-          - name: MONGO_INITDB_ROOT_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: cvapp-secret
-                key: db-user
-          - name: MONGO_INITDB_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: cvapp-secret
-                key: db-pass
-          - name: MONGO_CONNECTION_STRING
-            valueFrom:
-              configMapKeyRef:
-                name: cvapp-configmap
-                key: mongo
-      initContainers:
-      - name: init-cvapp
-        image: busybox
-        command: ['sh', '-c', 'until nslookup cvapp-db; do echo waiting for mydb; sleep 2; done;']
-      
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: jwt-key
+            - name: JWT_REFRESH_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: jwt-ref-key
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: db-user
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cvapp-secret
+                  key: db-pass
+            - name: MONGO_CONNECTION_STRING
+              valueFrom:
+                configMapKeyRef:
+                  name: cvapp-configmap
+                  key: mongo
+      # initContainers:
+      #   - name: init-cvapp
+      #     image: busybox
+      #     command: ['sh', '-c', 'until nslookup cvapp-db; do echo waiting for mydb; sleep 2; done;']
+        
