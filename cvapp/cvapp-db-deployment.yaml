@@ -44,7 +44,7 @@ spec:
       volumes:
         - name: cvapp-data
           awsElasticBlockStore:
-            volumeID: vol-0feab5ad6c0da1c25
+            volumeID: vol-01b435f1b893a7908
             fsType: ext4
       # initContainers:
       #   - name: busybox
