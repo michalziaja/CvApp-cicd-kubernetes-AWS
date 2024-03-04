@@ -29,7 +29,7 @@ spec:
                   name: cvapp-secret
                   key: db-pass
           volumeMounts:
-            - mounthPath: /mongo/data
+            - mountPath: /mongo/data  
               name: cvapp-data
       nodeSelector:
         zone: eu-central-1a
@@ -43,5 +43,5 @@ spec:
           image: busybox:latest
           command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
           volumeMounts:
-            - name: vpro-db-data
+            - name: cvapp-data  
               mountPath: /mongo/data
