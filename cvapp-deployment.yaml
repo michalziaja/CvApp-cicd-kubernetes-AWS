@@ -18,7 +18,6 @@ spec:
       containers:
         - name: cvapp-db
           image: mongo
-          
           ports:
             - name: cvapp-db
               containerPort: 27017
@@ -33,6 +32,10 @@ spec:
               name: cvapp-data
       nodeSelector:
         zone: eu-central-1a
+      tolerations:  # Dodane toleracje dla taints
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
       volumes:
         - name: cvapp-data
           awsElasticBlockStore:
