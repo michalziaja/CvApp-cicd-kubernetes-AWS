@@ -30,7 +30,7 @@ spec:
             - mountPath: /var/lib/mysql
               name: vpro-db-data
       nodeSelector:
-        zone: eu-central-1a
+        zone: eu-central-1b
       volumes:
         - name: vpro-db-data
           awsElasticBlockStore:
