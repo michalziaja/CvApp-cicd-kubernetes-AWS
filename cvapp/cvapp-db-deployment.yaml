@@ -43,9 +43,9 @@ spec:
       #       fsType: ext4
       
       volumes:
-        - name: mongo-data
+        - name: cvapp-data
           persistentVolumeClaim:
-            claimName: mongo-pvc
+            claimName: mongodb-pvc
       
       
       # initContainers:
