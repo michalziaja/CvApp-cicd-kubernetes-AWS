@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -17,44 +18,44 @@ metadata:
   name: mongodb-pvc
 spec:
   accessModes:
-    - ReadWriteOnce  # Dostęp do zapisu i odczytu tylko dla jednego węzła
-  resources:
-    requests:
-      storage: 1Gi  # Żądany rozmiar przestrzeni dyskowej
-
-
-
-
-
-
-
-
-
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mongo-pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 500Mi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  hostPath:
-    path: "/mnt/data"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongo-pv-claim
-spec:
-  storageClassName: manual
-  accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi
+
+
+
+
+
+
+
+
+
+
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: mongo-pv-volume
+#   labels:
+#     type: local
+# spec:
+#   storageClassName: manual
+#   capacity:
+#     storage: 500Mi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   hostPath:
+#     path: "/mnt/data"
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mongo-pv-claim
+# spec:
+#   storageClassName: manual
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 500Mi
