@@ -21,8 +21,14 @@ spec:
             - name: cvapp-web-port
               containerPort: 80
           env:
-            - name: API_URL
+            - name: API_HOST
               valueFrom:
                 configMapKeyRef:
                   name: cvapp-configmap
-                  key: axios
+                  key: api
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: cvapp-configmap
+                  key: api_port
+      restartPolicy: Always

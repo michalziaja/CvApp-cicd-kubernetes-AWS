@@ -4,4 +4,5 @@ metadata:
   name: cvapp-configmap
 data:
   mongo: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@cvapp-db:27017"
-  axios: "http://cvapp-api:8000"
+  api: "kops.cvapplication.xyz"
+  api_port: "5000"

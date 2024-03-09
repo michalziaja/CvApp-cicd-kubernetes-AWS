@@ -19,7 +19,7 @@ spec:
           image: michalziaja/cvapp-api:latest
           ports:
             - name: cvapp-api-port
-              containerPort: 8000
+              containerPort: 5000
           env:
             - name: JWT_SECRET_KEY
               valueFrom:
