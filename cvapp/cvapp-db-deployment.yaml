@@ -36,16 +36,16 @@ spec:
               name: cvapp-data
       nodeSelector:
         zone: eu-central-1a
-      volumes:
-        - name: cvapp-data
-          awsElasticBlockStore:
-            volumeID: vol-01b435f1b893a7908
-            fsType: ext4
-      
       # volumes:
-      #   - name: mongo-data
-      #     persistentVolumeClaim:
-      #       claimName: mongo-pvc
+      #   - name: cvapp-data
+      #     awsElasticBlockStore:
+      #       volumeID: vol-01b435f1b893a7908
+      #       fsType: ext4
+      
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-pvc
       
       
       # initContainers:
