@@ -34,8 +34,8 @@ spec:
           volumeMounts:
             - mountPath: /mongo/data  
               name: cvapp-data
-      nodeSelector:
-        zone: eu-central-1a
+      # nodeSelector:
+      #   zone: eu-central-1a
       # volumes:
       #   - name: cvapp-data
       #     awsElasticBlockStore:
