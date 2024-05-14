@@ -54,9 +54,11 @@ jobs:
         id: apply
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
-
+      
+      - uses: action/secret-store@v1
+      
       - name: Get host public IP
-        uses: action/secret-store@v1
+        
         id: get_ip
         run: |
           HOST_IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
@@ -67,13 +69,16 @@ jobs:
     name: "Configure host instance"
     runs-on: ubuntu-latest
     needs: terraform
+    
     defaults:
       run:
         shell: bash
         # working-directory: ./terraform
     steps:
+      - uses: action/secret-store@v1
+      
       - name: Get host public IP
-        uses: action/secret-store@v1
+        
         id: show_ip
         run: |
           HOST_IP=${{ needs.get-ip.outputs.host_public_ip }}
