@@ -17,7 +17,7 @@ jobs:
     name: "TERRAFORM"
     runs-on: ubuntu-latest
     outputs: 
-      handle: ${{ steps.get_ip.outputs.host_public_ip }}
+      host_ip: ${{ steps.get_ip.outputs.host_ip }}
     defaults:
       run:
         shell: bash
@@ -62,8 +62,9 @@ jobs:
         
         id: get_ip
         run: |
-          HOST_IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
-          echo "host_public_ip=$HOST_IP" >> $GITHUB_OUTPUT
+          host_ip=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
+          echo "Output $host_ip"
+          echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
           
           
   configure:
@@ -81,9 +82,8 @@ jobs:
       - name: Get host public IP
         
         id: show_ip
-        run: |
-          HOST_IP=${{ needs.get-ip.outputs.host_public_ip }}
-          echo $HOST_IP
+        run: echo ${{ needs.terraform.outputs.host_ip }}
+          
         
       # - name: AWS Configure
       #   run: |
