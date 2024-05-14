@@ -1,20 +1,8 @@
-name: CvApp IAC
-
-# on:
-#     push:
-#       branches: 
-#         - main
-#       paths: 
-#         - terraform/**
-#     pull_request:
-#       branches: 
-#         - main
-#       paths: 
-#         - terraform/**
+name: CvApp CI
 
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
-  
+
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -22,6 +10,7 @@ env:
     # S3 bucket for the terraform state. 
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
 
 jobs:
     terraform:
@@ -68,3 +57,19 @@ jobs:
         # - name: Terraform Destroy
         #   id: destroy
         #   run: terraform destroy -auto-approve
+    
+    configure:
+        name: "Configure host instance"
+        runs-on: ubuntu-latest
+        steps:
+        - name: Get host public IP
+          id: get_ip
+          run: |
+            echo "::set-output name=host_ip::$(terraform output -json host_public_ip | jq -r '.')"
+        
+        - name: AWS Configure
+          run: |
+            ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@${{ steps.get_ip.outputs.host_ip }} \
+              "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
+              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
+              aws configure set default.region $AWS_REGION"
