@@ -58,6 +58,10 @@ jobs:
         id: get_ip
         run: |
           echo "::set-output name=host_ip::$(terraform output -json host_public_ip | jq -r '.')"
+      
+      - name: sleep
+        id: sleep
+        run: sleep 15
           
   configure:
     name: "Configure host instance"
