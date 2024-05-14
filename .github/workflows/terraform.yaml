@@ -56,14 +56,13 @@ jobs:
 
       - name: Get host public IP
         id: get_ip
-        run: |
-          echo $(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]') \
-          echo "IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP \
+        run: echo $(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]') 
+          
           
       
       - name: sleep
         id: sleep
-        run: echo $HOST_IP
+        run: echo "IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP
           
   configure:
     name: "Configure host instance"
