@@ -85,9 +85,10 @@ jobs:
         run: echo ${{ needs.terraform.outputs.host_ip }}
           
         
-      # - name: AWS Configure
-      #   run: |
-      #     ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@$HOST_IP \
-      #       "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
-      #       aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
-      #       aws configure set default.region $AWS_REGION"
+      - name: AWS Configure
+        id: aws_configure
+        run: |
+          ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }}
+            "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
+            aws configure set region $AWS_REGION"
