@@ -52,12 +52,14 @@ jobs:
       - name: Terraform Apply
         id: apply
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false -parallelism=1 -out host_public_ip planfile
+        run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
       - name: Get host public IP
         id: get_ip
         run: |
-          echo "host_ip=$(terraform output -json host_public_ip | jq -r '.')" >> $HOST_IP
+          echo "host_ip=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP \
+          echo $HOST_IP
+          echo $host_public_ip
       
       - name: sleep
         id: sleep
