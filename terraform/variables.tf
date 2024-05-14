@@ -64,4 +64,3 @@ variable "instance_name" {
   type        = string
   default     = "host-server"
 }
-#
