@@ -1,0 +1,46 @@
+name: CvApp CI
+
+on:
+  workflow_dispatch: # Uruchamianie workflow ręcznie
+
+env:
+    # credentials for deployment to AWS
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    # S3 bucket for the terraform state. 
+    BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
+    AWS_REGION: eu-central-1
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+
+jobs:
+  terraform:
+    name: "Apply terraform code changes"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    steps:
+      - name: Checkout source code 
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform with specified version on the runner
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config "bucket=$BUCKET_TF_STATE"
+
+      # - name: Terraform Format
+      #   id: fmt
+      #   run: terraform fmt -check
+      #   continue-on-error: true 
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Destroy
+        id: destroy
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform destroy -auto-approve
