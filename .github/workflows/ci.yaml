@@ -1,4 +1,4 @@
-name: CvApp CD
+name: test
 
 # on:
 #     push:
@@ -15,13 +15,13 @@ name: CvApp CD
 on:
   workflow_dispatch: 
 
-env:
-    # credentials for deployment to AWS
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    # S3 bucket for the terraform state. 
-    BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
-    AWS_REGION: eu-central-1
+# env:
+#     # credentials for deployment to AWS
+#     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     # S3 bucket for the terraform state. 
+#     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
+#     AWS_REGION: eu-central-1
 
 jobs:
     terraform:
@@ -29,8 +29,15 @@ jobs:
         runs-on: ubuntu-latest
         defaults:
             run:
-                shell: bash
-                working-directory: ./terraform
+              shell: bash
         steps:
-        - name: Checkout source code 
-          uses: actions/checkout@v4
+        - name: "Example output creation"
+          id: "my_step"
+          run: |
+            my_var="Hello World"
+            echo "Output [$my_var]"
+            echo "my_var=$my_var" >> $GITHUB_OUTPUT
+        
+        - name: "Example output call between steps"
+          run: |
+            echo "Output [${{steps.my_step.outputs.my_var}}]"
