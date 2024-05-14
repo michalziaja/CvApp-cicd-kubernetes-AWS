@@ -56,7 +56,7 @@ jobs:
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
       
-      - uses: action/secret-store@v1
+      # - uses: action/secret-store@v1
       
       - name: Get host public IP
         
@@ -76,7 +76,7 @@ jobs:
         shell: bash
         # working-directory: ./terraform
     steps:
-      - uses: action/secret-store@v1
+      # - uses: action/secret-store@v1
       
       - name: Get host public IP
         
