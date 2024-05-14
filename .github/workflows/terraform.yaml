@@ -57,15 +57,13 @@ jobs:
       - name: Get host public IP
         id: get_ip
         run: |
-          echo $(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
-          echo "{name}={value}" >> $GITHUB_STATE
-          echo "host_ip=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP \
-          echo $HOST_IP
-          echo $host_public_ip
+          echo $(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]') \
+          echo "IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP \
+          
       
       - name: sleep
         id: sleep
-        run: echo $host_public_ip
+        run: echo $HOST_IP
           
   configure:
     name: "Configure host instance"
