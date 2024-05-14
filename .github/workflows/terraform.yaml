@@ -14,7 +14,7 @@ env:
 
 jobs:
   terraform:
-    name: "TERRAFORM"
+    name: "Terraform"
     runs-on: ubuntu-latest
     outputs: 
       host_ip: ${{ steps.get_ip.outputs.host_ip }}
@@ -53,19 +53,17 @@ jobs:
 
       - name: Terraform Apply
         id: apply
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
-      
-      # - uses: action/secret-store@v1
-      
+           
       - name: Get host public IP
-        
         id: get_ip
         run: |
           host_ip=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
           echo "Output $host_ip"
           echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
           
+      - name: Wait for AWS CLI install
+        run: sleep 10  
           
   configure:
     name: "Configure host instance"
@@ -76,9 +74,7 @@ jobs:
       run:
         shell: bash
         # working-directory: ./terraform
-    steps:
-      # - uses: action/secret-store@v1
-      
+    steps:      
       - name: Show Host IP
         id: show_ip
         run: echo ${{ needs.terraform.outputs.host_ip }}
