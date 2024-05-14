@@ -3,12 +3,12 @@ name: CvApp IAC
 on:
     push:
       branches: 
-        - master
+        - main
       paths: 
         - terraform/**
     pull_request:
       branches: 
-        - master
+        - main
       paths: 
         - terraform/**
 env:
