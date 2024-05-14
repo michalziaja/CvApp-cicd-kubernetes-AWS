@@ -31,16 +31,10 @@ jobs:
         id: init
         run: terraform init -backend-config "bucket=$BUCKET_TF_STATE"
 
-      # - name: Terraform Format
-      #   id: fmt
-      #   run: terraform fmt -check
-      #   continue-on-error: true 
-
       - name: Terraform Validate
         id: validate
         run: terraform validate
 
       - name: Terraform Destroy
         id: destroy
-        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform destroy -auto-approve
