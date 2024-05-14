@@ -24,20 +24,23 @@ on:
 #     AWS_REGION: eu-central-1
 
 jobs:
-    terraform:
-        name: "Apply terraform code changes"
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-              shell: bash
-        steps:
-        - name: "Example output creation"
-          id: "my_step"
-          run: |
-            my_var="Hello World"
-            echo "Output [$my_var]"
-            echo "my_var=$my_var" >> $GITHUB_OUTPUT
-        
-        - name: "Example output call between steps"
-          run: |
-            echo "Output [${{steps.my_step.outputs.my_var}}]"
+  terraform:
+    name: "TERRAFORM"
+    runs-on: ubuntu-latest
+    # outputs: 
+    #   handle: ${{ steps.get_ip.outputs.host_public_ip }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    steps:
+    - name: "Example output creation"
+      id: "my_step"
+      run: |
+        my_var="Hello World"
+        echo "Output [$my_var]"
+        echo "my_var=$my_var" >> $GITHUB_OUTPUT
+    
+    - name: "Example output call between steps"
+      run: |
+        echo "Output [${{steps.my_step.outputs.my_var}}]"
