@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Get host public IP
         id: get_ip
-        run: echo $host_ip
+        run: echo ${{ steps.get_ip.outputs.host_ip }}
         
       - name: AWS Configure
         run: |
