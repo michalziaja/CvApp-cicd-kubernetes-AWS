@@ -1,0 +1,16 @@
+name: CvApp CD
+
+# on:
+#     push:
+#       branches: 
+#         - main
+#       paths: 
+#         - terraform/**
+#     pull_request:
+#       branches: 
+#         - main
+#       paths: 
+#         - terraform/**
+
+on:
+  workflow_dispatch: # Uruchamianie workflow ręcznie
