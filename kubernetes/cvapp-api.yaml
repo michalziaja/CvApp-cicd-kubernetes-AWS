@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cvapp-api
+  namespace: app
   labels:
     app: cvapp-api
 spec:
@@ -50,4 +51,20 @@ spec:
       #   - name: init-cvapp
       #     image: busybox
       #     command: ['sh', '-c', 'until nslookup cvapp-db; do echo waiting for mydb; sleep 2; done;']
-        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cvapp-api
+  namespace: app
+  labels:
+    app: cvapp-api
+spec:
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: cvapp-api-port
+  selector:
+    app: cvapp-api
+  type: ClusterIP

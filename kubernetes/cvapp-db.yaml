@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cvapp-db
+  namespace: app
   labels:
     app: cvapp-db
 spec:
@@ -55,3 +56,52 @@ spec:
       #     volumeMounts:
       #       - name: cvapp-data  
       #         mountPath: /mongo/data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cvapp-db
+  namespace: app
+  labels:
+    app: cvapp-db
+spec:
+  ports:
+    - port: 27017
+      targetPort: cvapp-db-port
+      protocol: TCP
+  selector:
+    app: cvapp-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-pv
+  namespace: app
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem #
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /mongo/data
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  namespace: app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard

@@ -1,3 +1,4 @@
+eks/pvc.yaml
 keys/key
 keys/key.pub
 terraform/.terraform.lock.hcl
