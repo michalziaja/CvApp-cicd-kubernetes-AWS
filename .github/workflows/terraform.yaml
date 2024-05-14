@@ -79,16 +79,21 @@ jobs:
     steps:
       # - uses: action/secret-store@v1
       
-      - name: Get host public IP
-        
+      - name: Show Host IP
         id: show_ip
         run: echo ${{ needs.terraform.outputs.host_ip }}
           
         
       - name: AWS Configure
+        uses: appleboy/ssh-action@v1.0.3
         id: aws_configure
-        run: |
-          ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }}
-            "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
-            aws configure set region $AWS_REGION"
+        with:
+          host: ${{ needs.terraform.outputs.host_ip }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          env: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION
+          script: |
+              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID 
+              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY 
+              aws configure set region $AWS_REGION
