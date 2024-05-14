@@ -5,10 +5,10 @@ echo "Start Install Script"
 # Update system
 sudo apt update -y
 
-# # Install Docker 
-# sudo apt install docker.io -y
-# sudo usermod -aG docker ubuntu
-# sudo systemctl enable --now docker 
+# Install Docker 
+sudo apt install docker.io -y
+sudo usermod -aG docker ubuntu
+sudo systemctl enable --now docker 
 
 
 # Install AWS CLI
@@ -20,16 +20,16 @@ sleep 5
 
 
 # # Install Kubectl
-# sudo apt update
-# sudo curl -LO "https://dl.k8s.io/release/v1.28.4/bin/linux/amd64/kubectl"
-# sudo chmod +x kubectl
-# sudo mv kubectl /usr/local/bin/
-# kubectl version --client
+sudo apt update
+sudo curl -LO "https://dl.k8s.io/release/v1.28.4/bin/linux/amd64/kubectl"
+sudo chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+kubectl version --client
 
 # # Install eksctl
-# curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-# sudo mv /tmp/eksctl /usr/local/bin
-# eksctl version
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
 
 # Install Terraform
 # wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
