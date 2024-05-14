@@ -57,7 +57,7 @@ jobs:
       - name: Get host public IP
         id: get_ip
         run: |
-          echo "::set-output name=host_ip::$(terraform output -json host_public_ip | jq -r '.')"
+          echo "host_ip=$(terraform output -json host_public_ip | jq -r '.')" >> $HOST_IP
       
       - name: sleep
         id: sleep
@@ -70,11 +70,11 @@ jobs:
     steps:
       - name: Get host public IP
         id: get_ip
-        run: echo ${{ steps.get_ip.outputs.host_ip }}
+        run: echo $HOST_IP
         
       - name: AWS Configure
         run: |
-          ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@${{ steps.get_ip.outputs.host_ip }} \
+          ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@$HOST_IP \
             "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
             aws configure set default.region $AWS_REGION"
