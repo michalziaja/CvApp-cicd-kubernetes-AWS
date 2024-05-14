@@ -27,8 +27,8 @@ jobs:
   terraform:
     name: "TERRAFORM"
     runs-on: ubuntu-latest
-    # outputs: 
-    #   handle: ${{ steps.get_ip.outputs.host_public_ip }}
+    outputs: 
+      my_var: ${{steps.my_step.outputs.my_var}}
     # defaults:
     #   run:
     #     shell: bash
@@ -44,3 +44,8 @@ jobs:
     - name: "Example output call between steps"
       run: |
         echo "Output ${{steps.my_step.outputs.my_var}}"
+  
+  my_second_job:
+    needs: my_job
+    steps:
+      - run: echo my_var [${{needs.my_job.outputs.my_var}}]
