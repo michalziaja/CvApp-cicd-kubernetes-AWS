@@ -1,16 +1,20 @@
 name: CvApp IAC
 
+# on:
+#     push:
+#       branches: 
+#         - main
+#       paths: 
+#         - terraform/**
+#     pull_request:
+#       branches: 
+#         - main
+#       paths: 
+#         - terraform/**
+
 on:
-    push:
-      branches: 
-        - main
-      paths: 
-        - terraform/**
-    pull_request:
-      branches: 
-        - main
-      paths: 
-        - terraform/**
+  workflow_dispatch: # Uruchamianie workflow ręcznie
+  
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
