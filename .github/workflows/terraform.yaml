@@ -52,7 +52,7 @@ jobs:
       - name: Terraform Apply
         id: apply
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false planfile -out host_public_ip
+        run: terraform apply -auto-approve -input=false -parallelism=1 -out host_public_ip planfile
 
       - name: Get host public IP
         id: get_ip
