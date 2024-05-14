@@ -12,9 +12,9 @@ CVapp is an application designed to streamline the job application process acros
 
 - Users can create accounts and log in to access the React-based dashboard.
 
-### FARM Stack & Selenium Integration
+### FARM Stack & Beautiful_Soup
 
-- FastAPI and Selenium are utilized to extract job details automatically from inputted job URLs.
+- FastAPI and Beautiful_Soup are utilized to extract job details automatically from inputted job URLs.
 
 ### Multi-Platform Support
 
