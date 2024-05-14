@@ -54,6 +54,11 @@ jobs:
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
+      - name: Get host public IP
+        id: get_ip
+        run: |
+          echo "::set-output name=host_ip::$(terraform output -json host_public_ip | jq -r '.')"
+          
   configure:
     name: "Configure host instance"
     runs-on: ubuntu-latest
@@ -61,8 +66,7 @@ jobs:
     steps:
       - name: Get host public IP
         id: get_ip
-        run: |
-          echo "::set-output name=host_ip::$(terraform output -json host_public_ip | jq -r '.')"
+        run: echo $host_ip
         
       - name: AWS Configure
         run: |
