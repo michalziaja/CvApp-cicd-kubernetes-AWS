@@ -28,7 +28,7 @@ jobs:
     name: "TERRAFORM"
     runs-on: ubuntu-latest
     outputs: 
-      my_var: ${{steps.my_step.outputs.my_var}}
+      host_ip: ${{steps.my_step.outputs.my_var}}
     # defaults:
     #   run:
     #     shell: bash
@@ -49,4 +49,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: terraform
     steps:
-      - run: echo my_var [${{needs.terraform.outputs.my_var}}]
+      - run: echo my_var [${{needs.terraform.outputs.host_ip}}]
