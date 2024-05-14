@@ -14,8 +14,9 @@ env:
 
 jobs:
   terraform:
-    name: "Apply terraform code changes"
+    name: "TERRAFORM"
     runs-on: ubuntu-latest
+    ouputs: ${{ steps.get_ip.outputs.host_public_ip }}
     defaults:
       run:
         shell: bash
@@ -55,27 +56,32 @@ jobs:
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
       - name: Get host public IP
+        uses: action/secret-store@v1
         id: get_ip
-        run: echo $(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]') 
+        run: |
+          HOST_IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')
+          echo "host_public_ip=$HOST_IP" >> $GITHUB_OUTPUT
           
-          
-      
-      - name: sleep
-        id: sleep
-        run: echo "IP=$(terraform output host_public_ip | sed 's/\[//;s/\]//;s/,//;s/"//g' | tr -d '[:space:]')" >> $HOST_IP
           
   configure:
     name: "Configure host instance"
     runs-on: ubuntu-latest
     needs: terraform
+    defaults:
+      run:
+        shell: bash
+        # working-directory: ./terraform
     steps:
       - name: Get host public IP
-        id: get_ip
-        run: echo $HOST_IP
-        
-      - name: AWS Configure
+        uses: action/secret-store@v1
+        id: show_ip
         run: |
-          ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@$HOST_IP \
-            "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
-            aws configure set default.region $AWS_REGION"
+          HOST_IP=${{ needs.get-ip.outputs.host_public_ip }}
+          echo $HOST_IP
+        
+      # - name: AWS Configure
+      #   run: |
+      #     ssh -i "$SSH_PRIVATE_KEY" -o StrictHostKeyChecking=no ubuntu@$HOST_IP \
+      #       "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
+      #       aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
+      #       aws configure set default.region $AWS_REGION"
