@@ -3,7 +3,9 @@ keys/key
 keys/key.pub
 terraform/.terraform.lock.hcl
 terraform/.terraform
-
+project
+terraform/eks
+terraform/eks2
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
