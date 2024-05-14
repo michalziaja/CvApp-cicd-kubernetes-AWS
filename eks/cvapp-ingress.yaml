@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kops.cvapplication.xyz
+  - host: cvapplication.xyz
     http:
       paths:
       - path: /
@@ -29,7 +29,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: kops.cvapplication.xyz
+  - host: cvapplication.xyz
     http:
       paths:
       - path: /api/v1  #/api(/|$)(.*)
