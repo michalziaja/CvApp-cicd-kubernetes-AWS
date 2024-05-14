@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     # outputs: 
     #   handle: ${{ steps.get_ip.outputs.host_public_ip }}
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./terraform
+    # defaults:
+    #   run:
+    #     shell: bash
+    #     working-directory: ./terraform
     steps:
     - name: "Example output creation"
       id: "my_step"
