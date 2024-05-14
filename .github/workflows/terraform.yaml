@@ -16,7 +16,8 @@ jobs:
   terraform:
     name: "TERRAFORM"
     runs-on: ubuntu-latest
-    outputs: ${{ steps.get_ip.outputs.host_public_ip }}
+    outputs: 
+      handle: ${{ steps.get_ip.outputs.host_public_ip }}
     defaults:
       run:
         shell: bash
