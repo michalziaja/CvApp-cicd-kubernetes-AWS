@@ -14,7 +14,8 @@ env:
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    
+
+jobs:    
   delete_eks:
     name: "Delete EKS cluster"
     runs-on: ubuntu-latest
