@@ -39,7 +39,7 @@ jobs:
               #sudo chmod +x install.sh
               #./install.sh
               #aws s3api list-buckets
-              eksctl delete cluster --name $EKS_NAME -y
+              #eksctl delete cluster --name cvapp-eks
   terraform:
     name: "Terraform destroy"
     runs-on: ubuntu-latest
