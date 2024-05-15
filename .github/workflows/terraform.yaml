@@ -77,7 +77,7 @@ jobs:
       run:
         shell: bash
     steps:      
-      - name: IP
+      - name: Host IP
         id: ip
         run: echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
 
