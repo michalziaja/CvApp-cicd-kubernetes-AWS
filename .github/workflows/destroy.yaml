@@ -13,51 +13,28 @@ env:
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
 
 jobs:
-  cluster:
-    name: "Destroy Cluster"
+  terraform:
+    name: "Apply terraform code changes"
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-    - name: AWS Configure
-        uses: appleboy/ssh-action@v1.0.3
-        id: aws_configure
-        with:
-          host: ${{ needs.terraform.outputs.host_ip }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          script: |
-              sudo chmod +x install.sh
-              ./install.sh
-              aws s3api list-buckets
-  
-  
-  
-  
-  
-  # terraform:
-  #   name: "Apply terraform code changes"
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #       working-directory: ./terraform
-  #   steps:
-  #     - name: Checkout source code 
-  #       uses: actions/checkout@v4
+        working-directory: ./terraform
+    steps:
+      - name: Checkout source code 
+        uses: actions/checkout@v4
 
-  #     - name: Setup Terraform with specified version on the runner
-  #       uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform with specified version on the runner
+        uses: hashicorp/setup-terraform@v3
 
-  #     - name: Terraform Init
-  #       id: init
-  #       run: terraform init -backend-config "bucket=$BUCKET_TF_STATE"
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config "bucket=$BUCKET_TF_STATE"
 
-  #     - name: Terraform Validate
-  #       id: validate
-  #       run: terraform validate
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
 
-  #     - name: Terraform Destroy
-  #       id: destroy
-  #       run: terraform destroy -auto-approve
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform destroy -auto-approve
