@@ -6,9 +6,9 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [aws_security_group.security-group.id]
   iam_instance_profile   = aws_iam_instance_profile.instance-profile.name
 
-  root_block_device {
-    volume_size = 20
-  }
+  # root_block_device {
+  #   volume_size = 20
+  # }
   provisioner "remote-exec" {
   inline = ["echo 'Wait until SSH is ready'"]
   
