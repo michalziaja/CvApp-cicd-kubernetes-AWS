@@ -104,7 +104,6 @@ jobs:
           docker tag cvapp-web:latest michalziaja/cvapp-web:${{ github.run_number }}
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker push michalziaja/cvapp-web:{{ github.run_number }}
