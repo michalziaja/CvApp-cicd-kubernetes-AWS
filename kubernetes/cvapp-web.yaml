@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-web
-          image: michalziaja/cvapp-web
+          image: michalziaja/cvapp-web:latest
           ports:
             - name: cvapp-web-port
               containerPort: 80
@@ -42,9 +42,9 @@ metadata:
   namespace: app
   labels:
     app: cvapp-web
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+  #   service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
 spec:
   ports:
     - protocol: TCP
@@ -52,4 +52,4 @@ spec:
       targetPort: cvapp-web-port
   selector:
     app: cvapp-web
-  type: LoadBalancer
+  type: ClusterIP
