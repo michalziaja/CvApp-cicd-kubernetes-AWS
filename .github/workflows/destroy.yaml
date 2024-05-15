@@ -11,7 +11,7 @@ env:
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    HOST_IP: ${{ needs.terraform.outputs.host_ip }} # Pobranie host_ip z workflow terraform.yaml
+    
 
 jobs:
   configure:
