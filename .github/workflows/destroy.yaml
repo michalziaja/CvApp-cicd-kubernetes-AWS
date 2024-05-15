@@ -2,9 +2,10 @@ name: CvApp Destroy
 
 on:
   workflow_dispatch:
-    secrets:
-      HOST_IP:
-        required: true 
+    
+secrets:
+  HOST_IP:
+    required: true 
 
 env:
     # credentials for deployment to AWS
