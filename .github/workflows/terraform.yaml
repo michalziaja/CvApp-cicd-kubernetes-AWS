@@ -3,8 +3,6 @@ name: CvApp CI
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
     
-
-    
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
