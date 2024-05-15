@@ -19,7 +19,7 @@ jobs:
   delete_eks:
     name: "Delete EKS cluster"
     runs-on: ubuntu-latest
-    needs: terraform
+    
     
     defaults:
       run:
@@ -43,6 +43,7 @@ jobs:
   terraform:
     name: "Apply terraform code changes"
     runs-on: ubuntu-latest
+    needs: delete_eks
     defaults:
       run:
         shell: bash
