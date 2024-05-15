@@ -5,7 +5,7 @@ on:
     inputs:
       enviroment:
         description: "Host IP"
-        required: true
+        required: false
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
