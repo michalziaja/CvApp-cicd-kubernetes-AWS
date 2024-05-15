@@ -115,8 +115,9 @@ jobs:
 
   update_deploy:
     runs-on: ubuntu-latest
-    defaults:
     needs: build_and_deploy
+    defaults:
+    
       run:
         working-directory: ./kubernetes
     steps:
