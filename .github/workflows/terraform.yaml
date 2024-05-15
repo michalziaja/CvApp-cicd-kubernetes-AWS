@@ -101,6 +101,7 @@ jobs:
         shell: bash
     steps:
       - name: Create Cluster
+        uses: appleboy/ssh-action@v1.0.3
         id: eksctl
         with:
           host: ${{ needs.terraform.outputs.host_ip }}
