@@ -64,7 +64,7 @@ jobs:
         id: get_ip
         run: |
           host_ip=$(terraform output -raw host_public_ip)
-          echo "Output $host_ip"
+          echo "Host_ip $host_ip"
           echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
            
 
@@ -113,11 +113,15 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
+          env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |
-            echo "Create Cluster"
-            eksctl create cluster --name $EKS_NAME --region $AWS_REGION --node-type t2.medium --nodes-min 3 --nodes-max 3
-            echo "Update Kubeconfig"
-            aws eks update-kubeconfig --region $AWS_REGION --name $EKS_NAME
-            echo "Approve Oidc"
-            eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$EKS_NAME --approve
+            echo $EKS_NAME
+            echo $AWS_REGION
+            
+            #echo "Create Cluster"
+            #eksctl create cluster --name $EKS_NAME --region $AWS_REGION --node-type t2.medium --nodes-min 3 --nodes-max 3
+            #echo "Update Kubeconfig"
+            #aws eks update-kubeconfig --region $AWS_REGION --name $EKS_NAME
+            #echo "Approve Oidc"
+            #eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$EKS_NAME --approve
             
