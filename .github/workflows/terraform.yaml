@@ -73,7 +73,7 @@ jobs:
            
   export_ip:        
     name: Export IP
-    uses: ./.github/workflows/ip.yaml
+    uses: ./.github/workflows/terraform.yaml
     secrets:
       HOST_IP: ${{ needs.terraform.outputs.host_ip }}
 
