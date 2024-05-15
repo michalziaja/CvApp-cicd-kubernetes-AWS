@@ -3,6 +3,8 @@ name: CvApp CI
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
 
+    outputs:
+      host_ip: {{ jobs.terraform.outputs.host_ip }}
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
