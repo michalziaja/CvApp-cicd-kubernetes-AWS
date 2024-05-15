@@ -64,3 +64,9 @@ variable "instance_name" {
   type        = string
   default     = "host-server"
 }
+
+variable "private_key_path" {
+  description = "Private Key"
+  type        = string
+  default     = "./private_key.pem"
+}
