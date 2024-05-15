@@ -26,8 +26,13 @@ jobs:
       - name: Checkout source code 
         uses: actions/checkout@v4
 
-      - name: Setup Terraform with specified version on the runner
+      - name: Setup Terraform 
         uses: hashicorp/setup-terraform@v3
+      
+      - name: Decode SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 400 private_key.pem
 
       - name: Terraform Init
         id: init
@@ -62,8 +67,9 @@ jobs:
           echo "Output $host_ip"
           echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
           
-      # - name: Wait for AWS CLI install
-      #   run: sleep 10  
+      - name: Clean up
+        if: always()
+        run: rm -f private_key.pem
           
   configure:
     name: "Configure host instance"
