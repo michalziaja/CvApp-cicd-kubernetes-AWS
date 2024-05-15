@@ -1,5 +1,5 @@
-resource "aws_iam_instance_profile" "instance-profile" {
-  name = "host-instance-profile"
+resource "aws_iam_instance_profile" "host-profile" {
+  name = "host-profile"
   role = aws_iam_role.iam-role.name
 }
 
