@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: terraform
     outputs: 
-      host_ip: ${{ step.ip.outputs.host_ip }}
+      host_ip: ${{ steps.ip.outputs.host_ip }}
     defaults:
       run:
         shell: bash
