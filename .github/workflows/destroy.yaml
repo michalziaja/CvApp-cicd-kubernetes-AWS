@@ -19,7 +19,7 @@ jobs:
     defaults:
       run:
         shell: bash
-  - name: AWS Configure
+    - name: AWS Configure
         uses: appleboy/ssh-action@v1.0.3
         id: aws_configure
         with:
