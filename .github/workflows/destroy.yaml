@@ -5,7 +5,7 @@ on:
     inputs:
       enviroment:
         description: "Host IP"
-        required: false
+        required: true
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -16,29 +16,29 @@ env:
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 jobs:    
-  # delete_eks:
-  #   name: "Delete EKS cluster"
-  #   runs-on: ubuntu-latest
+  delete_eks:
+    name: "Delete EKS cluster"
+    runs-on: ubuntu-latest
     
     
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #   steps:      
+    defaults:
+      run:
+        shell: bash
+    steps:      
       
-  #     - name: AWS Configure
-  #       uses: appleboy/ssh-action@v1.0.3
-  #       id: aws_configure
-  #       with:
-  #         host: ${{ github.event.inputs.enviroment }}
-  #         username: ubuntu
-  #         key: ${{ secrets.SSH_PRIVATE_KEY}}
-  #         port: 22
-  #         script: |
-  #             #sudo chmod +x install.sh
-  #             #./install.sh
-  #             #aws s3api list-buckets
-  #             echo "HELLO"
+      - name: AWS Configure
+        uses: appleboy/ssh-action@v1.0.3
+        id: aws_configure
+        with:
+          host: ${{ github.event.inputs.enviroment }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          script: |
+              #sudo chmod +x install.sh
+              #./install.sh
+              #aws s3api list-buckets
+              echo "HELLO"
  
   terraform:
     name: "Apply terraform code changes"
