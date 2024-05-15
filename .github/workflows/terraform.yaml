@@ -66,11 +66,6 @@ jobs:
           echo "Output $host_ip"
           echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
            
-  # export_ip:        
-  #   name: Export IP
-  #   uses: ./.github/workflows/terraform.yaml
-  #   secrets:
-  #     HOST_IP: ${{ needs.terraform.outputs.host_ip }}
 
   configure:
     name: "Configure host instance"
@@ -84,9 +79,6 @@ jobs:
       - name: Show Host IP
         id: show_ip
         run: echo ${{ needs.terraform.outputs.host_ip }}
-          
-      - name: Show Host IP2
-        run: echo ${{ env.host_ip }}
 
       - name: AWS Configure
         uses: appleboy/ssh-action@v1.0.3
