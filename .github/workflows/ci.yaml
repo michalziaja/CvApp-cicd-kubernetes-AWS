@@ -63,27 +63,27 @@ jobs:
       #       -Dsonar.sources=src/
       #       -Dsonar.verbose=true
 
-  backend:
+  # backend:
 
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./app/backend
-    strategy:
-      matrix:
-        python-version: ["3.10"]
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./app/backend
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.10"]
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      # You can test your matrix by printing the current Python version
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Python ${{ matrix.python-version }}
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: ${{ matrix.python-version }}
+  #     # You can test your matrix by printing the current Python version
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
           
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -96,18 +96,16 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t cvapp-web:latest .
+          docker build -t cvapp-web:latest .    
+
+      - name: Tag Docker image
+        run: |
+          docker tag cvapp-web:latest michalziaja/cvapp-web:${{ github.run_number }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Tag Docker image
-        run: |
-          docker tag cvapp-web:latest michalziaja/cvapp-web:${{ github.run_number }}
-        
-      - name: Push Docker image to Docker Hub
         run: |
           docker push cvapp-web:latest michalziaja/cvapp-web:${{ github.run_number }}
