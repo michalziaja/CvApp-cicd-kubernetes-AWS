@@ -14,6 +14,7 @@ env:
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    EKS_NAME: cvapp-eks
 
 jobs:    
   delete_eks:
@@ -26,9 +27,9 @@ jobs:
         shell: bash
     steps:      
       
-      - name: AWS Configure
+      - name: "Delete EKS"
         uses: appleboy/ssh-action@v1.0.3
-        id: aws_configure
+        id: delete_eks
         with:
           host: ${{ github.event.inputs.enviroment }}
           username: ubuntu
@@ -38,8 +39,7 @@ jobs:
               #sudo chmod +x install.sh
               #./install.sh
               #aws s3api list-buckets
-              echo "HELLO"
- 
+              eksctl delete cluster --name $EKS_NAME -y
   terraform:
     name: "Apply terraform code changes"
     runs-on: ubuntu-latest
