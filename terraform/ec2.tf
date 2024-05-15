@@ -24,16 +24,16 @@ resource "aws_instance" "ec2" {
   }
 } 
 
-# resource "null_resource" "copy_install_script" {
-#   depends_on = [aws_instance.ec2]
-#   provisioner "file" {
-#     source      = "${path.module}/install.sh"
-#     destination = "/home/ubuntu/install.sh"
-#     connection {
-#       type        = "ssh"
-#       host        = aws_instance.ec2.public_ip
-#       user        = "ubuntu"
-#       private_key = file(var.private_key_path)
-#     }
-#   }
-# }
+resource "null_resource" "copy_install_script" {
+  depends_on = [aws_instance.ec2]
+  provisioner "file" {
+    source      = "${path.module}/install.sh"
+    destination = "/home/ubuntu/install.sh"
+    connection {
+      type        = "ssh"
+      host        = aws_instance.ec2.public_ip
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+    }
+  }
+}
