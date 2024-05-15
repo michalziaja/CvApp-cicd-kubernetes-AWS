@@ -11,6 +11,7 @@ env:
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+    EKS_NAME: cvapp-eks
 
 jobs:
   terraform:
@@ -91,10 +92,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
           script: |
-              #sudo chmod +x install.sh
-              #./install.sh
-              #aws s3api list-buckets
-              echo "HELLO"
+              sudo chmod +x install.sh
+              ./install.sh
+              
 
   create_cluster:
     name: "Create EKS cluster"
@@ -114,7 +114,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
           script: |
-            #eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2
-            #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
-            #eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
-            echo "cluster create"
+            echo "Create Cluster"
+            eksctl create cluster --name $EKS_NAME --region $AWS_REGION --node-type t2.medium --nodes-min 3 --nodes-max 3
+            echo "Update Kubeconfig"
+            aws eks update-kubeconfig --region $AWS_REGION --name $EKS_NAME
+            echo "Approve Oidc"
+            eksctl utils associate-iam-oidc-provider --region=$AWS_REGION --cluster=$EKS_NAME --approve
+            
