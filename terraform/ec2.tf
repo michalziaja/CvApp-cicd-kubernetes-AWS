@@ -24,8 +24,14 @@ resource "aws_instance" "ec2" {
   }
 } 
 
+resource "null_resource" "sleep" {
+  provisioner "local-exec" {
+    command = "sleep 60"  # Sleep for 60 seconds
+  }
+}
+
 resource "null_resource" "copy_install_script" {
-  depends_on = [aws_instance.ec2]
+  depends_on = [null_resource.sleep]
   provisioner "file" {
     source      = "${path.module}/install.sh"
     destination = "/home/ubuntu/install.sh"
