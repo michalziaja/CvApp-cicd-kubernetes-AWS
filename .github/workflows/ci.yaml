@@ -118,7 +118,7 @@ jobs:
     defaults:
       run:
         working-directory: ./kubernetes
-
+    steps:
       - name: Update deployment file
         run: |
           sed -i 's|image: michalziaja/cvapp-web:|image: michalziaja/cvapp-web:${{ github.run_number }}|' cvapp-web.yaml
