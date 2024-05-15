@@ -116,7 +116,7 @@ jobs:
           #env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |            
             #echo "Create Cluster"
-            eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.medium --nodes-min 3 --nodes-max 3
+            eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.medium --nodes-min 2 --nodes-max 3
             #echo "Update Kubeconfig"
             #aws eks update-kubeconfig --region eu-central1 --name cvapp-eks
             #echo "Approve Oidc"
