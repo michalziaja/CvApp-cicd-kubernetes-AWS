@@ -116,9 +116,10 @@ jobs:
   update_deploy:
     runs-on: ubuntu-latest
     defaults:
+    needs: build_and_deploy
       run:
         working-directory: ./kubernetes
     steps:
       - name: Update deployment file
         run: |
-          sed -i 's|image: michalziaja/cvapp-web:|image: michalziaja/cvapp-web:${{ github.run_number }}|' ./kubernetes/cvapp-web.yaml
+          sed -i 's|image: michalziaja/cvapp-web:|image: michalziaja/cvapp-web:${{ github.run_number }}|' /kubernetes/cvapp-web.yaml
