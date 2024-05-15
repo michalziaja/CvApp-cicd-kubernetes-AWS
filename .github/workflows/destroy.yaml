@@ -16,7 +16,7 @@ env:
 jobs:
   job1:
     name: "Call other workflow"
-    uses: ./.github/workflows/terraform.yaml@main
+    uses: ./.github/workflows/terraform.yaml
   job2:
     needs: job1
     steps:
