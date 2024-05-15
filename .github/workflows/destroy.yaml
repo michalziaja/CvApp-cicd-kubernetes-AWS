@@ -5,9 +5,9 @@ name: CvApp Destroy
 on:
   workflow_dispatch:
     
-secrets:
-  HOST_IP:
-    required: true
+# secrets:
+#   HOST_IP:
+#     required: true
 
 env:
     # credentials for deployment to AWS
@@ -18,32 +18,32 @@ env:
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
 
+
 jobs:
-  configure:
-    name: "Configure host instance"
-    runs-on: ubuntu-latest
-    needs: terraform
+  # configure:
+  #   name: "Configure host instance"
+  #   runs-on: ubuntu-latest
+  #   needs: terraform
     
-    defaults:
-      run:
-        shell: bash
-        # working-directory: ./terraform
-    steps:      
-      - name: Show Host IP
-        id: show_ip
-        run: echo ${{ secrets.HOST_IP }}
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:      
+  #     - name: Show Host IP
+  #       id: show_ip
+  #       run: echo ${{ secrets.HOST_IP }}
           
         
-      - name: AWS Configure
-        uses: appleboy/ssh-action@v1.0.3
-        id: aws_configure
-        with:
-          host: ${{ secrets.HOST_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          script: |
-              ehco "HELLO"
+  #     - name: AWS Configure
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       id: aws_configure
+  #       with:
+  #         host: ${{ secrets.HOST_IP }}
+  #         username: ubuntu
+  #         key: ${{ secrets.SSH_PRIVATE_KEY}}
+  #         port: 22
+  #         script: |
+  #             rm install.sh
   
   
   terraform:
