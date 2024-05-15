@@ -2,9 +2,9 @@ name: CvApp CI
 
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
+    
 
-    outputs:
-      host_ip: {{ jobs.terraform.outputs.host_ip }}
+    
 env:
     # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -78,10 +78,7 @@ jobs:
       run:
         shell: bash
     steps:      
-      - name: Show Host IP
-        id: show_ip
-        run: echo ${{ needs.terraform.outputs.host_ip }}
-
+      
       - name: AWS Configure
         uses: appleboy/ssh-action@v1.0.3
         id: aws_configure
@@ -95,3 +92,25 @@ jobs:
               #./install.sh
               #aws s3api list-buckets
               echo "HELLO"
+
+  create_cluster:
+    name: "Create EKS cluster"
+    runs-on: ubuntu-latest
+    needs: configure
+
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Create Cluster
+        id: eksctl
+        with:
+          host: ${{ needs.terraform.outputs.host_ip }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          script: |
+            #eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2
+            #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
+            #eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
+            echo "cluster create"
