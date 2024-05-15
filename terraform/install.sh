@@ -30,24 +30,25 @@ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/d
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 
-echo "Install Argo CD"
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-sudo apt install jq -y
+# echo "Install Argo CD"
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
+# sudo apt install jq -y
 
-echo "Install Helm"
-sudo snap install helm --classic
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
+# echo "Install Helm"
+# sudo snap install helm --classic
+# helm repo add eks https://aws.github.io/eks-charts
+# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# helm repo add grafana https://grafana.github.io/helm-charts
+# helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+# helm repo update
 
-echo "Install Prometheus"
-helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+# echo "Install Prometheus"
+# helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
 
-echo "Install Grafana"
-helm install grafana grafana/grafana --namespace monitoring --create-namespace
+# echo "Install Grafana"
+# helm install grafana grafana/grafana --namespace monitoring --create-namespace
 
-echo "Install ingress-nginx"
-helm install ingress-nginx ingress-nginx/ingress-nginx
+# echo "Install ingress-nginx"
+# helm install ingress-nginx ingress-nginx/ingress-nginx
 
 echo "Install Script Complete"
