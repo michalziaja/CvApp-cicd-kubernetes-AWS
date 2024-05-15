@@ -108,6 +108,7 @@ jobs:
       - name: Create Cluster
         uses: appleboy/ssh-action@v1.0.3
         id: eksctl
+        command_timeout: 20m
         with:
           host: ${{ needs.configure.outputs.host_ip }}
           username: ubuntu
