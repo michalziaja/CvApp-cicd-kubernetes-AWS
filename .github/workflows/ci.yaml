@@ -11,8 +11,8 @@ on:
 #     # S3 bucket for the terraform state. 
 #     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
 #     AWS_REGION: eu-central-1
-      Username: ${{ secrets.DOCKER_USERNAME }}
-      Password: ${{ secrets.DOCKER_PASSWORD }}
+      # Username: ${{ secrets.DOCKER_USERNAME }}
+      # Password: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   # frontend:
