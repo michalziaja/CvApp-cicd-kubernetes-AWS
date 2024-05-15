@@ -109,7 +109,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
-        # uses: docker/build-push-action@v5
+      - name: Push image to Docker Hub
         run: |
           docker push michalziaja/cvapp-web:${{ github.run_number }}
+
+  update_deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./kubernetes
+
+      - name: Update deployment file
+        run: |
+          sed -i 's|image: michalziaja/cvapp-web:|image: michalziaja/cvapp-web:${{ github.run_number }}|' cvapp-web.yaml
