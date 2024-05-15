@@ -97,3 +97,4 @@ jobs:
           script: |
               sudo chmod +x install.sh
               ./install.sh
+              aws s3api list-buckets
