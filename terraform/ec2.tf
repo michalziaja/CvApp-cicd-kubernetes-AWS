@@ -9,7 +9,16 @@ resource "aws_instance" "ec2" {
   root_block_device {
     volume_size = 20
   }
-
+  provisioner "remote-exec" {
+  inline = ["echo 'Wait until SSH is ready'"]
+  
+  connection {
+      type        = "ssh"
+      host        = aws_instance.ec2.public_ip
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+    }
+  }
   tags = {
     Name = var.instance_name
   }
