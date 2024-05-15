@@ -105,7 +105,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         id: eksctl
         with:
-          host: ${{ needs.configure.outputs.host_ip }}
+          host: ${{ needs.configure.outputs.key }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
