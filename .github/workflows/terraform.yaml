@@ -72,15 +72,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: terraform
     outputs: 
-      host_ip: ${{ steps.aws_configure.outputs.key }}
+      host_ip: ${{ step.ip.outputs.host_ip }}
     defaults:
       run:
         shell: bash
     steps:      
-      
+      - name: IP
+        id: ip
+        run: echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
+
       - name: AWS Configure
         uses: appleboy/ssh-action@v1.0.3
         id: aws_configure
+        
         with:
           host: ${{ needs.terraform.outputs.host_ip }}
           username: ubuntu
