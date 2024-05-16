@@ -94,17 +94,17 @@ jobs:
           echo ${{ needs.terraform.outputs.host_ip }}
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID \
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY \
-          aws configure set region $AWS_REGION \
-          aws configure list"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set region eu-central-1"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure list"
 
           
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
-          echo '2'" 
-          #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-          chmod 400 private_key.pem
-          ssh -i private_key.pem ubuntu@${{ needs.terraform.outputs.host_ip }} -o StrictHostKeyChecking=no "echo klucz"
+          # ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
+          # echo '2'" 
+          # #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          # chmod 400 private_key.pem
+          # ssh -i private_key.pem ubuntu@${{ needs.terraform.outputs.host_ip }} -o StrictHostKeyChecking=no "echo klucz"
           rm -f private_key.pem
   # create_cluster:
   #   name: "Create EKS cluster"
