@@ -72,7 +72,7 @@ spec:
       protocol: TCP
   selector:
     app: cvapp-db
-  type: ClusterIP
+  type: NodePort
 
 ---
 apiVersion: v1
@@ -90,7 +90,6 @@ spec:
   storageClassName: standard
   hostPath:
     path: /mongo/data
-
 
 ---
 apiVersion: v1
