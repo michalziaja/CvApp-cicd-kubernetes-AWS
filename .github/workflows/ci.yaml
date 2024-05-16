@@ -112,15 +112,21 @@ jobs:
     needs: build_and_deploy
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Update k8s deployment
-        uses: swdotcom/update-and-apply-kubernetes-configs@v1
+        uses: actions/checkout@v3
         with:
-          k8-config-file-paths: kubernetes/cvapp-web.yaml
-          replacement-method: defined
-        env:
-          IMAGE_TAG: ${{ github.run_number }}
+          respository: michalziaja/CvApp-cicd-kubernetes-AWS
+          token: ${{ secrets.GH_KEY }}
+
+      - name: Setup git config
+        run: |
+          git config --global user.email "michalziaja88@gmail.com"
+          git config --global user.name "michalziaja"
+          echo ${{ github.run_number }}
+          sed -i 's|image: michalziaja/cvapp-api|image: michalziaja/cvapp-api:${{ github.run_number }}|' cvapp-api.yaml
+          git add -A
+          git commit -am "Update images - ${{ github.run_number }}"
+      - run: echo ${{ github }}
+      - run: git push origin main
   #   defaults:
     
   #     run:
