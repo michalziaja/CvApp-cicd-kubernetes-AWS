@@ -83,6 +83,7 @@ jobs:
           docker push michalziaja/cvapp-web:${{ github.run_number }}
   
   frontend_Trivy:
+    needs: frontend_docker
     steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
@@ -149,6 +150,7 @@ jobs:
           docker push michalziaja/cvapp-api:${{ github.run_number }}
   
   backend_Trivy:
+    needs: backend_docker
     steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
