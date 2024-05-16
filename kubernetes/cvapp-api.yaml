@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-api
-          image: michalziaja/cvapp-api:55
+          image: michalziaja/cvapp-api:66
           ports:
             - name: cvapp-api-port
               containerPort: 5000
