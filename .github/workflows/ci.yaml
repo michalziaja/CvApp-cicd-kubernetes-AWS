@@ -79,6 +79,9 @@ jobs:
           pip install -r requirements.txt
       - name: Test backend
         run: |
+          python3 -m pytest
+      - name: Run backend
+        run: |
           uvicorn app.app:app --reload
          
   backend_docker:
