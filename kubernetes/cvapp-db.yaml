@@ -49,13 +49,13 @@ spec:
             claimName: mongodb-pvc
       
       
-      # initContainers:
-      #   - name: busybox
-      #     image: busybox:latest
-      #     command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
-      #     volumeMounts:
-      #       - name: cvapp-data  
-      #         mountPath: /mongo/data
+      initContainers:
+        - name: busybox
+          image: busybox:latest
+          command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
+          volumeMounts:
+            - name: cvapp-data  
+              mountPath: /mongo/data
 
 ---
 apiVersion: v1
