@@ -114,12 +114,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_KEY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Setup git config
-      #   run: |
-      #     git config --global user.email "michalziaja88@gmail.com"
-      #     #git config --global username "michalziaja"
+      - name: Setup git config
+        run: |
+          git config --global user.email "michalziaja88@gmail.com"
+          #git config --global username "michalziaja"
 
       - name: Update deployment file
         run: |
