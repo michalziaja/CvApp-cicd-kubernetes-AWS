@@ -77,9 +77,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pythom -m pytest
+      - name: Test backend
+          python -m pytest
          
-  build_and_deploy:
+  backend_docker:
     runs-on: ubuntu-latest
     needs: backend
     defaults:
@@ -107,10 +108,10 @@ jobs:
         run: |
           docker push michalziaja/cvapp-web:${{ github.run_number }}
 
-  update_deploy:
+  update_k8s_files:
     name: Update k8s deployment file
     runs-on: ubuntu-latest
-    needs: build_and_deploy
+    needs: [backend_docker]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -122,6 +123,7 @@ jobs:
           git config --global user.email "michalziaja88@gmail.com"
           git config --global user.name "michalziaja"
           sed -i 's|image: michalziaja/cvapp-api[^ ]*|image: michalziaja/cvapp-api:${{ github.run_number }}|' kubernetes/cvapp-api.yaml
+          # sed -i 's|image: michalziaja/cvapp-web[^ ]*|image: michalziaja/cvapp-web:${{ github.run_number }}|' kubernetes/cvapp-web.yaml
           git add kubernetes/cvapp-api.yaml
           git commit -m "Update images to tag ${{ github.run_number }}"
           git push origin main
