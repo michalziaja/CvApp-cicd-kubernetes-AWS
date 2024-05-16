@@ -110,48 +110,57 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Create Cluster
-        uses: appleboy/ssh-action@v1.0.3
-        id: eksctl
-        timeout-minute: 20
-        with:
-          host: ${{ needs.configure.outputs.host_ip }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          #env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
-          script: |            
-            echo "Create Cluster"
-            eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 3
-            echo "Update Kubeconfig"
-            aws eks update-kubeconfig --region eu-central1 --name cvapp-eks
-            echo "Approve Oidc"
-            eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
+      # - name: Create Cluster
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   id: eksctl
+      #   with:
+      #     host: ${{ needs.configure.outputs.host_ip }}
+      #     username: ubuntu
+      #     key: ${{ secrets.SSH_PRIVATE_KEY}}
+      #     port: 22
+      #     #env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+      #     script: |            
+      #       echo "Create Cluster"
+      #       eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 3
+      #       echo "Update Kubeconfig"
+      #       aws eks update-kubeconfig --region eu-central1 --name cvapp-eks
+      #       echo "Approve Oidc"
+      #       eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
 
-  configure_cluster:
-    name: "Config EKS cluster"
-    runs-on: ubuntu-latest
-    needs: ip
+      - name: eks
+        id: eks
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "\
+          eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
+          aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks && \
+          eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve"
 
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Create Cluster
-        uses: appleboy/ssh-action@v1.0.3
-        id: eksctl
-        command_timeout: 1200
-        with:
-          host: ${{ needs.terraform.outputs.host_ip }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          #env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
-          script: |            
-            echo "Create Cluster"
-            eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2
-            echo "Update Kubeconfig"
-            aws eks update-kubeconfig --region eu-central1 --name cvapp-eks
-            echo "Approve Oidc"
-            eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
+
+
+  # configure_cluster:
+  #   name: "Config EKS cluster"
+  #   runs-on: ubuntu-latest
+  #   needs: ip
+
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #     - name: Create Cluster
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       id: eksctl
+  #       command_timeout: 1200
+  #       with:
+  #         host: ${{ needs.terraform.outputs.host_ip }}
+  #         username: ubuntu
+  #         key: ${{ secrets.SSH_PRIVATE_KEY}}
+  #         port: 22
+  #         #env: EKS_NAME,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+  #         script: |            
+  #           echo "Create Cluster"
+  #           eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2
+  #           echo "Update Kubeconfig"
+  #           aws eks update-kubeconfig --region eu-central1 --name cvapp-eks
+  #           echo "Approve Oidc"
+  #           eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
             
