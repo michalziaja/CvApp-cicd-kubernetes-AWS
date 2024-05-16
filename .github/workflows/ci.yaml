@@ -5,7 +5,7 @@ on:
   workflow_dispatch: 
 
 
-jobs:
+# jobs:
   # frontend:
   #   runs-on: ubuntu-latest
   #   defaults:
@@ -78,7 +78,7 @@ jobs:
   #         python -m pip install --upgrade pip
   #         pip install -r requirements.txt
   #         pythom -m pytest
-          
+jobs:          
   build_and_deploy:
     runs-on: ubuntu-latest
     defaults:
@@ -110,14 +110,17 @@ jobs:
     name: Update k8s deployment file
     runs-on: ubuntu-latest
     needs: build_and_deploy
-   
-      - name: update
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update k8s deployment
         uses: swdotcom/update-and-apply-kubernetes-configs@v1
-      with:
-        k8-config-file-paths: kubernetes/cvapp-api.yaml
-        replacement-method: defined
-      env:
-        IMAGE_TAG: ${{ github.run_number }}
+        with:
+          k8-config-file-paths: kubernetes/cvapp-web.yaml
+          replacement-method: defined
+        env:
+          IMAGE_TAG: ${{ github.run_number }}
   #   defaults:
     
   #     run:
