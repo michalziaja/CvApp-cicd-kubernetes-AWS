@@ -183,15 +183,15 @@ jobs:
           git commit -m "Update images to tag ${{ github.run_number }}"
           git push origin main
   
-  # k8s-manifest-scan:
-  #   needs: [update_k8s_files]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Snyk to check Kubernetes manifest file for issues
-  #       uses: snyk/actions/iac@master
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #       with:
-  #         file: kubernetes-manifest/
-  #         args: --severity-threshold=high
+  k8s-manifest-scan:
+    needs: [update_k8s_files]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk to check Kubernetes manifest file for issues
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          file: kubernetes/
+          args: --severity-threshold=high
