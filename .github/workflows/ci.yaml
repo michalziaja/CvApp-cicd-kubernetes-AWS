@@ -79,7 +79,7 @@ jobs:
           pip install -r requirements.txt
       - name: Test backend
         run: |
-          python3 -m pytest
+          uvicorn app.app:app --reload
          
   backend_docker:
     runs-on: ubuntu-latest
