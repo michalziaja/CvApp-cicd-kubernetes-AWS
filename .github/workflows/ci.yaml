@@ -154,6 +154,7 @@ jobs:
           sed -i 's|image: michalziaja/cvapp-api[^ ]*|image: michalziaja/cvapp-api:${{ github.run_number }}|' kubernetes/cvapp-api.yaml
           sed -i 's|image: michalziaja/cvapp-web[^ ]*|image: michalziaja/cvapp-web:${{ github.run_number }}|' kubernetes/cvapp-web.yaml
           git add kubernetes/cvapp-api.yaml
+          git add kubernetes/cvapp-web.yaml
           git commit -m "Update images to tag ${{ github.run_number }}"
           git push origin main
       
