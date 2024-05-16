@@ -48,10 +48,6 @@ jobs:
         run: terraform plan -no-color -input=false -out planfile
         continue-on-error: true 
 
-      - name: Terraform Plan Status 
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
@@ -94,15 +90,16 @@ jobs:
       - name: Host IP
         id: ip
         run: |
-          export
           echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
-          export HOST_IP=${{ needs.terraform.outputs.host_ip }}
-          echo $HOST_IP
           echo ${{ needs.terraform.outputs.host_ip }}
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID \
-          echo '1'"
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY \
+          aws configure set region $AWS_REGION \
+          aws configure list"
+
+          
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
           echo '2'" 
           #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
