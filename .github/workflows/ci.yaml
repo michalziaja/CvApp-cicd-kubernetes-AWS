@@ -107,9 +107,10 @@ jobs:
           docker push michalziaja/cvapp-web:${{ github.run_number }}
 
   update_deploy:
+    name: Update k8s deployment file
     runs-on: ubuntu-latest
     needs: build_and_deploy
-    steps:
+   
       - name: update
         uses: swdotcom/update-and-apply-kubernetes-configs@v1
       with:
