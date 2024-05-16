@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-api
-          image: michalziaja/cvapp-api:latest
+          image: michalziaja/cvapp-api:${{ github.run_number }}
           ports:
             - name: cvapp-api-port
               containerPort: 5000
