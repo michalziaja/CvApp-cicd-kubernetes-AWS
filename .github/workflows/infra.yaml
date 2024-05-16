@@ -1,4 +1,4 @@
-name: CvApp CI
+name: Infra
 
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
