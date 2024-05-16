@@ -116,10 +116,10 @@ jobs:
         with:
           token: ${{ secrets.GH_KEY }}
 
-      - name: Setup git config
-        run: |
-          git config --global user.email "michalziaja88@gmail.com"
-          #git config --global username "michalziaja"
+      # - name: Setup git config
+      #   run: |
+      #     git config --global user.email "michalziaja88@gmail.com"
+      #     #git config --global username "michalziaja"
 
       - name: Update deployment file
         run: |
