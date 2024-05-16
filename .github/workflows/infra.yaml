@@ -59,9 +59,9 @@ jobs:
       - name: Get host public IP
         id: get_ip
         run: |
-          host_ip=$(terraform output -raw host_public_ip)
-          echo "Host_ip $host_ip"
-          echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
+          echo "host_ip=$(terraform output -raw host_public_ip)" >> $GITHUB_OUTPUT
+         # echo "Host_ip $host_ip"
+         # echo "host_ip=$host_ip" >> $GITHUB_OUTPUT
            
 
   configure:
@@ -113,7 +113,7 @@ jobs:
       - name: Create Cluster
         uses: appleboy/ssh-action@v1.0.3
         id: eksctl
-        command_timeout: 20m
+        timeout-minute: 20
         with:
           host: ${{ needs.configure.outputs.host_ip }}
           username: ubuntu
