@@ -80,8 +80,7 @@ jobs:
     steps:      
       - name: AWS Configure
         uses: appleboy/ssh-action@v1.0.3
-        id: aws_configure
-        
+        id: aws_configure  
         with:
           host: ${{ needs.terraform.outputs.host_ip }}
           username: ubuntu
@@ -92,16 +91,16 @@ jobs:
               sudo chmod +x install.sh
               #./install.sh
         
-        - name: Host IP
-          id: ip
-          run: |
-            echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
-            ssh -i ${{ secrets.SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"
-            ssh -i ${{ secrets.SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}   
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-            chmod 400 private_key.pem
-            ssh -i private.pem ubuntu@$host_ip -o StrictHostKeyChecking=no "echo klucz"
-            rm -f private_key.pem
+      - name: Host IP
+        id: ip
+        run: |
+          echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY} -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}   
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 400 private_key.pem
+          ssh -i private.pem ubuntu@$host_ip -o StrictHostKeyChecking=no "echo klucz"
+          rm -f private_key.pem
   # create_cluster:
   #   name: "Create EKS cluster"
   #   runs-on: ubuntu-latest
