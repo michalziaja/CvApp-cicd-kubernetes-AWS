@@ -13,10 +13,10 @@ sudo ./aws/install
 echo "TEST AWS CLI"
 aws s3api list-buckets
 
-echo "Install Docker"
-sudo apt install docker.io -y >> /dev/null
-sudo usermod -aG docker ubuntu
-sudo systemctl enable --now docker
+# echo "Install Docker"
+# sudo apt install docker.io -y >> /dev/null
+# sudo usermod -aG docker ubuntu
+# sudo systemctl enable --now docker
 
 echo "Install Kubectl"
 sudo apt update
