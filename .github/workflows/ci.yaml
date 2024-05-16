@@ -84,6 +84,7 @@ jobs:
   
   frontend_Trivy:
     needs: frontend_docker
+    runs-on: ubuntu-latest
     steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
@@ -151,6 +152,7 @@ jobs:
   
   backend_Trivy:
     needs: backend_docker
+    runs-on: ubuntu-latest
     steps:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
