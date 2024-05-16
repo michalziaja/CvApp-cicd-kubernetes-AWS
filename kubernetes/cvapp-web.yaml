@@ -20,7 +20,7 @@ spec:
           image: michalziaja/cvapp-web:74
           ports:
             - name: cvapp-web-port
-              containerPort: 3000
+              containerPort: 80
           env:
             - name: API_HOST
               valueFrom:
@@ -49,7 +49,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: cvapp-web-port
+      targetPort: 80
   selector:
     app: cvapp-web
   type: ClusterIP
