@@ -119,7 +119,7 @@ jobs:
       - name: Setup git config
         run: |
           git config --global user.email "michalziaja88@gmail.com"
-          git config --global username "michalziaja"
+          git config --global user.name "michalziaja"
 
       - name: Update deployment file
         run: |
