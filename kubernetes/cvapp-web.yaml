@@ -49,7 +49,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 80
+      targetPort: cvapp-web-port
   selector:
     app: cvapp-web
   type: ClusterIP
