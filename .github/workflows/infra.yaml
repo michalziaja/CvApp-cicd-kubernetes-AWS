@@ -89,21 +89,25 @@ jobs:
           env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |
               sudo chmod +x install.sh
-              #./install.sh
+              ./install.sh
         
       - name: Host IP
         id: ip
         run: |
+          export
           echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
+          export HOST_IP=${{ needs.terraform.outputs.host_ip }}
+          echo $HOST_IP
+          echo ${{ needs.terraform.outputs.host_ip }}
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID \
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID \
           echo '1'"
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
           echo '2'" 
           #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
-          ssh -i private_key.pem ubuntu@$host_ip -o StrictHostKeyChecking=no "echo klucz"
+          ssh -i private_key.pem ubuntu@${{ needs.terraform.outputs.host_ip }} -o StrictHostKeyChecking=no "echo klucz"
           rm -f private_key.pem
   # create_cluster:
   #   name: "Create EKS cluster"
