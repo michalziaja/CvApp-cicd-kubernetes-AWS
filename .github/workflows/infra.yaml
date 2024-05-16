@@ -101,10 +101,11 @@ jobs:
           aws configure list"
 
           rm private_key.pem
+  
   create_cluster:
     name: "Create EKS cluster"
     runs-on: ubuntu-latest
-    needs: ip
+    needs: configure
 
     defaults:
       run:
