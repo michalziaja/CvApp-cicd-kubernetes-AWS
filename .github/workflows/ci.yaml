@@ -79,7 +79,7 @@ jobs:
           pip install -r requirements.txt
       - name: Test backend
         run: |
-          python -m pytest
+          python3 -m pytest
          
   backend_docker:
     runs-on: ubuntu-latest
