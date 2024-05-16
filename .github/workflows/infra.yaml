@@ -97,8 +97,10 @@ jobs:
           echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}   
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID \
+          echo '1'"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$host_ip "aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} \
+          echo '2'" 
           #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
           ssh -i private_key.pem ubuntu@$host_ip -o StrictHostKeyChecking=no "echo klucz"
