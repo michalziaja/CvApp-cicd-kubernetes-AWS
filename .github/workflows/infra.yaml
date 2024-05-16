@@ -140,7 +140,7 @@ jobs:
       - name: Create Cluster
         uses: appleboy/ssh-action@v1.0.3
         id: eksctl
-        command_timeout: 20m
+        command_timeout: 1200
         with:
           host: ${{ needs.terraform.outputs.host_ip }}
           username: ubuntu
