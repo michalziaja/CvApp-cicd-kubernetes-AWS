@@ -36,6 +36,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
           script: |
+              aws iam delete-policy --policy-arn arn:aws:iam::975510455885:policy/AWSLoadBalancerControllerIAMPolicy
               #sudo chmod +x install.sh
               #./install.sh
               #aws s3api list-buckets
