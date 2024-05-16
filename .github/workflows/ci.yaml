@@ -78,6 +78,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Test backend
+        runs: |
           python -m pytest
          
   backend_docker:
