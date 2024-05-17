@@ -4,7 +4,7 @@ metadata:
   name: cvapp-configmap
   namespace: app
 data:
-  mongo: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@cvapp-db-svc"
+  mongo: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@cvapp-db-svc:27017"
   #mongo: "mongodb+srv://root:pass@cvapp-db.ziwppl4.mongodb.net/?retryWrites=true&w=majority"
   api: "cvapp-api-svc"
   #api_port: "5000"
