@@ -176,8 +176,8 @@ jobs:
         run: |
           git config --global user.email "michalziaja88@gmail.com"
           git config --global user.name "michalziaja"
-          sed -i 's|image: michalziaja/cvapp-api[^ ]*|image: michalziaja/cvapp-api:${{ github.run_number }}|' kubernetes/cvapp-api.yaml
-          sed -i 's|image: michalziaja/cvapp-web[^ ]*|image: michalziaja/cvapp-web:${{ github.run_number }}|' kubernetes/cvapp-web.yaml
+          sed -i 's|image: michalziaja/cvapp-api[^ ]*|image: michalziaja/cvapp-api:${{ github.run_number }}|' kubernetes/api.yaml
+          sed -i 's|image: michalziaja/cvapp-web[^ ]*|image: michalziaja/cvapp-web:${{ github.run_number }}|' kubernetes/web.yaml
           git add kubernetes/cvapp-api.yaml
           git add kubernetes/cvapp-web.yaml
           git commit -m "Update images to tag ${{ github.run_number }}"

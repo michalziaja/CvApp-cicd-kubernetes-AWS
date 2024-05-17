@@ -8,7 +8,7 @@ metadata:
     #nginx.ingress.kubernetes.io/affinity-mode: "persistent"
     #nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
     # nginx.ingress.kubernetes.io/configuration-snippet: |
     #   more_set_headers "server: hide";
     #   more_set_headers "X-Content-Type-Options: nosniff"
@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: 
+  - host: cvapplication.xyz
     http:
       paths:
       - path: /
@@ -42,7 +42,7 @@ spec:
       #       port:
       #         number: 80
       
-      - path: /api/v1/(/|$)(.*)
+      - path: /api/v1/?(.*)
         pathType: ImplementationSpecific
         backend:
           service:

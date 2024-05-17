@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-web
-          image: michalziaja/cvapp-web:04
+          image: michalziaja/cvapp-web:05
           ports:
             - name: cvapp-web-port
               containerPort: 80
@@ -27,11 +27,6 @@ spec:
                 configMapKeyRef:
                   name: cvapp-configmap
                   key: api
-            # - name: API_PORT
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: cvapp-configmap
-            #       key: api_port
       restartPolicy: Always
 
 ---

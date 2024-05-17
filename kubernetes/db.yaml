@@ -34,29 +34,12 @@ spec:
                   key: db-user
           volumeMounts:
             - mountPath: /mongo/data  
-              name: cvapp-data
-      # nodeSelector:
-      #   zone: eu-central-1a
-      # volumes:
-      #   - name: cvapp-data
-      #     awsElasticBlockStore:
-      #       volumeID: vol-01b435f1b893a7908
-      #       fsType: ext4
-      
+              name: cvapp-data     
       volumes:
         - name: cvapp-data
           persistentVolumeClaim:
             claimName: mongodb-pvc
       
-      
-      # initContainers:
-      #   - name: busybox
-      #     image: busybox:latest
-      #     command: ["sh", "-c", "rm -rf /mongo/data/lost+found"]
-      #     volumeMounts:
-      #       - name: cvapp-data  
-      #         mountPath: /mongo/data
-
 ---
 apiVersion: v1
 kind: Service
@@ -72,5 +55,5 @@ spec:
       protocol: TCP
   selector:
     app: cvapp-db
-  # type: ClusterIP
+  type: ClusterIP
   
