@@ -32,7 +32,6 @@ export default defineConfig({
     include: "**/*.jsx"
   })],
   base: "/",
-  plugins: [react()],
   preview: {
     port: 8080,
     strictPort: true,
