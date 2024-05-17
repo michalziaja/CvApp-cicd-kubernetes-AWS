@@ -72,5 +72,5 @@ spec:
       protocol: TCP
   selector:
     app: cvapp-db
-  type: ClusterIP
+  # type: ClusterIP
   
