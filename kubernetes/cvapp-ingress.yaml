@@ -43,7 +43,7 @@ spec:
       #         number: 80
       
       - path: /api/v1/(/|$)(.*)
-        pathType: Prefix #ImplementationSpecific
+        pathType: ImplementationSpecific
         backend:
           service:
             name: cvapp-api-svc
