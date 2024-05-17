@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: cvapplication.xyz
+  - host: app.cvapplication.xyz
     http:
       paths:
       - path: /
@@ -43,7 +43,7 @@ spec:
       #         number: 80
       
       - path: /api/v1/?(.*)
-        pathType: ImplementationSpecific
+        pathType: ImplementationSpecific #Prefix
         backend:
           service:
             name: cvapp-api-svc
