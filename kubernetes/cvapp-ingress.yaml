@@ -9,10 +9,10 @@ metadata:
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      more_set_headers "server: hide";
-      more_set_headers "X-Content-Type-Options: nosniff"
-      more_set_headers "Cross-Origin-Resource-Policy: same-site";
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   more_set_headers "server: hide";
+    #   more_set_headers "X-Content-Type-Options: nosniff"
+    #   more_set_headers "Cross-Origin-Resource-Policy: same-site";
 spec:
   ingressClassName: nginx
   rules:
