@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-api
-          image: michalziaja/cvapp-api:05
+          image: michalziaja/cvapp-api:06
           ports:
             - name: cvapp-api-port
               containerPort: 5000
@@ -47,7 +47,7 @@ spec:
                 secretKeyRef:
                   name: cvapp-secret
                   key: mongo
-                  
+
 ---
 apiVersion: v1
 kind: Service
