@@ -60,6 +60,7 @@ spec:
   ports:
     - protocol: TCP
       port: 5000
+      targetPort: 5000
   selector:
     app: cvapp-api
   type: ClusterIP

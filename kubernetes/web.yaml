@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-web
-          image: michalziaja/cvapp-web:07
+          image: michalziaja/cvapp-web:05
           ports:
             - name: cvapp-web-port
               containerPort: 8080
@@ -44,7 +44,8 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
+      targetPort: 8080
   selector:
     app: cvapp-web
   #type: LoadBalancer
-  type: ClusterIP
+  #type: ClusterIP
