@@ -8,9 +8,9 @@ import axios from 'axios'
 
 //const baseURL =  'http://cvapplication.xyz/api/v1/'
 
-const baseURL = `${process.env.API_HOST}`
+const baseURL = $process.env.API_HOST
 
-//const baseURL = process.env.API_URL
+//const baseURL = ${process.env.API_PORT}`+'/api/v1/
 
 const axiosInstance = axios.create({
     baseURL
