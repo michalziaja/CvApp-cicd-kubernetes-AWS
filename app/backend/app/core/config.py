@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7   # 7 days
     PROJECT_NAME: str = "cvapp"
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://cvapp-api", "http://cvapp-api-svc"]
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://cvapp-web", "http://cvapp-web-svc", "http://app.cvapplication.xyz", "http://app.cvapplication.xyz:5000" ]
         #"http://localhost:3000"       
     
 
