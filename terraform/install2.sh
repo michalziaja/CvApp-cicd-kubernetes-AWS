@@ -27,6 +27,7 @@ echo "ArgoCD"
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
 sudo apt install jq -y
+sleep 5
 kubectl get pods -n argocd
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
@@ -52,14 +53,8 @@ helm repo update
 # sudo systemctl enable --now docker
 
 
-
-
-
 export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 export ARGOCD_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 echo $ARGOCD_SERVER
 echo $ARGOCD_PWD
-
-
-
 echo "Install Script Complete"
