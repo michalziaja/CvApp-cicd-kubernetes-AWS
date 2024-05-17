@@ -9,14 +9,18 @@ metadata:
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "server: hide";
+      more_set_headers "X-Content-Type-Options: nosniff"
+      more_set_headers "Cross-Origin-Resource-Policy: same-site";
 spec:
   ingressClassName: nginx
   rules:
-  - host: 
+  - host: "*.amazonaws.com"
     http:
       paths:
       - path: /
-        pathType: Prefix
+        pathType: Exact
         backend:
           service:
             name: cvapp-web-svc
@@ -24,19 +28,20 @@ spec:
               number: 80
 
       - path: /login
-        pathType: Prefix
+        pathType: Exact
         backend:
           service:
             name: cvapp-web-svc
             port:
               number: 80
       - path: /register
-        pathType: Prefix
+        pathType: Exact
         backend:
           service:
             name: cvapp-web-svc
             port:
               number: 80
+      
       - path: /api/v1/
         pathType: Prefix
         backend:
