@@ -52,5 +52,5 @@ spec:
       targetPort: cvapp-web-port
   selector:
     app: cvapp-web
-  type: LoadBalancer
-  #type: ClusterIP
+  #type: LoadBalancer
+  type: ClusterIP
