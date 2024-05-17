@@ -116,9 +116,10 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.configure.outputs.host_ip }} "\
-          #eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
-          #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks && \
-          #eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve"
+          eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
+          sudo chmod +x install2.sh \
+          ./install2.sh
+          
           
 
 

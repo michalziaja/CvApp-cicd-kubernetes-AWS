@@ -46,11 +46,4 @@ resource "null_resource" "copy_install_script" {
       private_key = file(var.private_key_path)
     }
   }
-
-  connection {
-    type        = "ssh"
-    host        = aws_instance.ec2.public_ip
-    user        = "ubuntu"
-    private_key = file(var.private_key_path)
-  }
 }
