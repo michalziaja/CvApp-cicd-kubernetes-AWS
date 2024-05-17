@@ -45,7 +45,7 @@ metadata:
 #   annotations:
 #     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 #     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
-# spec:
+  spec:
   ports:
     - protocol: TCP
       port: 80
