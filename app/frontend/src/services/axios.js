@@ -6,7 +6,7 @@ import axios from 'axios'
 
 //const baseURL = ('http://'+`${process.env.API_HOST}`+':'+`${process.env.API_PORT}`+'/api/v1/')
 
-const baseURL =  'http://cvapp-api/api/v1'
+const baseURL =  'http://cvapp-api:5000/api/v1'
 
 //const baseURL = process.env.API_URL
 
