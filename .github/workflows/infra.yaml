@@ -118,7 +118,7 @@ jobs:
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.configure.outputs.host_ip }} "\
           eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
           sudo chmod +x install2.sh \
-          ./install2.sh
+          ./install2.sh"
           
           
 
