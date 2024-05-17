@@ -13,10 +13,10 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
   },
-  // build: {
-  //   outDir: 'dist', // katalog wyjściowy dla zbudowanych plików
-  //   assetsDir: '.', // katalog zasobów
-  //   //sourcemap: false, // wyłącz mapy źródłowe (jeśli nie są potrzebne)
-  //   port: 8000
-  // }
+  build: {
+    outDir: 'dist', // katalog wyjściowy dla zbudowanych plików
+    assetsDir: '.', // katalog zasobów
+    //sourcemap: false, // wyłącz mapy źródłowe (jeśli nie są potrzebne)
+    port: 3000
+  }
 })
