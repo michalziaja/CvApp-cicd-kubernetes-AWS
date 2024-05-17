@@ -6,6 +6,6 @@ metadata:
 data:
   mongo: "mongodb://root:pass@cvapp-db-svc:27017"
   #api: "http://cvapp-api:5000/api/v1/"
-  api: "http://app.cvapplication.xyz/api/v1/"
+  api: "http://app.cvapplication.xyz"
 
   #api_port: "5000"
