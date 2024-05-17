@@ -20,6 +20,21 @@ spec:
             name: cvapp-web-svc
             port:
               number: 80
+
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: cvapp-web-svc
+            port:
+              number: 80
+      - path: /register
+        pathType: Prefix
+        backend:
+          service:
+            name: cvapp-web-svc
+            port:
+              number: 80
       - path: /api/v1/
         pathType: Prefix
         backend:
