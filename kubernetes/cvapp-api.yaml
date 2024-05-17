@@ -44,8 +44,8 @@ spec:
                   key: db-pass
             - name: MONGO_CONNECTION_STRING
               valueFrom:
-                configMapKeyRef:
-                  name: cvapp-configmap
+                secretKeyRef:
+                  name: cvapp-secret
                   key: mongo
       # initContainers:
       #   - name: init-cvapp
