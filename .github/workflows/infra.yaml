@@ -130,7 +130,7 @@ jobs:
       - name: eks
         id: eks
         run: |
-          ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }}
+          ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "echo '1'"
 
           ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.aws.outputs.host_ip }} "\
           #eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
