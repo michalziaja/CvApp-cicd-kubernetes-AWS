@@ -67,4 +67,4 @@ spec:
       targetPort: cvapp-api-port
   selector:
     app: cvapp-api
-  #type: ClusterIP
+  type: ClusterIP
