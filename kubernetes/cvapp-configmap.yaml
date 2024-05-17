@@ -5,6 +5,6 @@ metadata:
   namespace: app
 data:
   mongo: "mongodb://root:pass@cvapp-db-svc:27017"
-  api: "http://cvapp-api-svc:5000"
+  api: "http://cvapp-api-svc/api/v1/"
 
   #api_port: "5000"
