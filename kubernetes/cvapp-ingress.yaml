@@ -16,34 +16,34 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "*.amazonaws.com"
+  - host: 
     http:
       paths:
       - path: /
-        pathType: Exact
+        pathType: Prefix #Exact
         backend:
           service:
             name: cvapp-web-svc
             port:
               number: 80
 
-      - path: /login
-        pathType: Exact
-        backend:
-          service:
-            name: cvapp-web-svc
-            port:
-              number: 80
-      - path: /register
-        pathType: Exact
-        backend:
-          service:
-            name: cvapp-web-svc
-            port:
-              number: 80
+      # - path: /login
+      #   pathType: Exact
+      #   backend:
+      #     service:
+      #       name: cvapp-web-svc
+      #       port:
+      #         number: 80
+      # - path: /register
+      #   pathType: Exact
+      #   backend:
+      #     service:
+      #       name: cvapp-web-svc
+      #       port:
+      #         number: 80
       
-      - path: /api/v1/
-        pathType: Prefix
+      - path: /api/v1/(/|$)(.*)
+        pathType: Prefix #ImplementationSpecific
         backend:
           service:
             name: cvapp-api-svc
