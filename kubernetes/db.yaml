@@ -51,7 +51,6 @@ metadata:
 spec:
   ports:
     - port: 27017
-      targetPort: cvapp-db-port
       protocol: TCP
   selector:
     app: cvapp-db
