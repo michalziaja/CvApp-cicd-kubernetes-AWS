@@ -90,7 +90,7 @@ jobs:
       - name: "AWS Configure"
         id: aws
         run: |
-          #echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
+          echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
           echo ${{ needs.terraform.outputs.host_ip }}
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
@@ -130,7 +130,7 @@ jobs:
       - name: eks
         id: eks
         run: |
-          ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "echo '1'"
+          ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.aws.outputs.host_ip }} "echo '1'"
 
           ssh -i "${{ secrets.SSH_PRIVATE_KEY }}" -o StrictHostKeyChecking=no ubuntu@${{ needs.aws.outputs.host_ip }} "\
           #eksctl create cluster --name cvapp-eks --region eu-central-1 --node-type t2.small --nodes-min 2 --nodes-max 2 && \
