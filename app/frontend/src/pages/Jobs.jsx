@@ -64,12 +64,44 @@ export const Jobs = () => {
   useEffect(() => {
     fetchJobsData();
   }, []);
+  
+
+  useEffect(() => {
+    const handleStorageChange = async (event) => {
+      if (event.key === '') {
+        sendOfferToBackend(event.newValue);
+      }
+    };
+  
+  window.addEventListener('storage', handleStorageChange);
+  
+    return () => {
+      // Nie musisz usuwać tego nasłuchiwania zdarzeń, ponieważ zdarzenie "storage" jest globalne
+    };
+  }, []);
+  
+  const sendOfferToBackend = async (value) => {
+    try {
+      setLoading(true);
+      
+      await axiosInstance.post(`url/?url=${localStorage.getItem('url')}`);
+      fetchJobsData();
+      setNewOfferUrl('');
+    } catch (error) {
+      console.error('Błąd podczas wysyłania oferty do backendu:', error);
+      // Obsługa błędu, jeśli jest to konieczne
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   const handleAddOffer = async () => {
     try {
       setLoading(true);
       const encodedUrl = encodeURIComponent(newOfferUrl);
-      await axiosInstance.post(`selenium/get_url?url=${encodedUrl}`);
+      await axiosInstance.post(`url/?url=${encodedUrl}`);
       fetchJobsData();
       setNewOfferUrl('');
       toast({

@@ -100,7 +100,7 @@ jobs:
           aws configure set region eu-central-1 && \
           aws configure list"
 
-          rm private_key.pem
+          #rm private_key.pem
   
   create_cluster:
     name: "Create EKS cluster"
