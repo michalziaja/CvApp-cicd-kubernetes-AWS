@@ -6,7 +6,7 @@ import axios from 'axios'
 
 //const baseURL = ('http://'+`${process.env.API_HOST}`+':'+`${process.env.API_PORT}`+'/api/v1/')
 
-const baseURL =  process.env.API_HOST;
+const baseURL =  '{process.env.API_HOST}'
 
 //const baseURL = process.env.API_URL
 
