@@ -3,7 +3,7 @@
 
 echo "Start Install Script"
 sudo apt update -y >> /dev/null
-
+sudo apt-get install -y apt-transport-https ca-certificates curl unzip jq
 
 echo "Install Kubectl"
 sudo apt update

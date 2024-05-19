@@ -48,4 +48,4 @@ spec:
   selector:
     app: cvapp-web
   #type: LoadBalancer
-  #type: ClusterIP
+  type: ClusterIP

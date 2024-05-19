@@ -27,7 +27,6 @@ kubectl create ns app
 echo "ArgoCD"
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-sudo apt install jq -y
 sleep 5
 kubectl get pods -n argocd
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'

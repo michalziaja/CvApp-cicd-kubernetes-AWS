@@ -36,8 +36,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
           script: |
-              #aws iam delete-policy --policy-arn arn:aws:iam::975510455885:policy/AWSLoadBalancerControllerIAMPolicy
-              #kubectl delete svc argocd-server -n argocd
+              aws iam delete-policy --policy-arn arn:aws:iam::975510455885:policy/AWSLoadBalancerControllerIAMPolicy
+              kubectl delete svc argocd-server -n argocd
               echo 'Ok'
   
   terraform:

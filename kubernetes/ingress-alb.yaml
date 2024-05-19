@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cvapp-alb
+  name: cvapp-ingress
   namespace: app
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -18,12 +18,12 @@ spec:
             backend:
               service:
                 name: cvapp-web-svc
-                port: 
+                port:
                   number: 8080
-          - path: /api/v1/?(.*)
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: cvapp-api-svc
-                port:   
+                port:
                   number: 5000

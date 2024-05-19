@@ -13,12 +13,8 @@ resource "aws_instance" "ec2" {
   }
 
   user_data = <<EOF
-    # Update and install dependencies
-    sudo apt-get update -y
-    sudo apt-get install -y apt-transport-https ca-certificates curl unzip jq
-
-    # Install aws-cli
-    sudo snap install aws-cli --channel=v1/stable --classic
+    echo "Install aws-cli"
+    sudo snap install aws-cli --classic
     EOF
 }
 

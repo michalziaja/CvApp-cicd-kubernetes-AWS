@@ -35,7 +35,7 @@ variable "sg-name" {
 }
 
 
-variable "iam-role" {
+variable "iam_role" {
   description = "IAM Role"
   type = string
   default = "host-iam-role"
@@ -50,7 +50,13 @@ variable "ami_id" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t2.small"
+  default     = "t2.micro"
+}
+
+variable "node_instance" {
+  description = "Node instance type"
+  type        = string
+  default     = "t2.micro"
 }
 
 variable "key_name" {
@@ -69,4 +75,16 @@ variable "private_key_path" {
   description = "Private Key"
   type        = string
   default     = "./private_key.pem"
+}
+
+variable "cluster_name" {
+  description = "EKS Cluster name"
+  type        = string
+  default     = "cvapp-eks"
+}
+
+variable "eks_vpc_name" {
+  description = "EKS VPC Cluster name"
+  type        = string
+  default     = "cvapp-eks-vpc"
 }
