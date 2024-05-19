@@ -9,7 +9,7 @@ resource "aws_instance" "ec2" {
   key_name               = var.key_name
 
   tags = {
-    Name = "${var.cluster_name}/EKSAdminInstance"
+    Name = "${var.cluster_name}/EksHostInstance"
   }
 
   user_data = <<EOF
@@ -18,9 +18,7 @@ resource "aws_instance" "ec2" {
     sudo apt-get install -y apt-transport-https ca-certificates curl unzip jq
 
     # Install aws-cli
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    sudo ./aws/install
+    sudo snap install aws-cli --channel=v1/stable --classic
     EOF
 }
 

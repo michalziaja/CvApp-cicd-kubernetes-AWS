@@ -1,5 +1,6 @@
 
 resource "aws_eks_cluster" "eks_cluster" {
+  depends_on = [ null_resource.sleep ]
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
 
@@ -16,6 +17,8 @@ resource "aws_eks_cluster" "eks_cluster" {
 
 
 resource "aws_eks_node_group" "eks_node_group" {
+  depends_on = [ aws_eks_cluster.eks_cluster ]
+  
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "ng-${var.node_group_name}"
   node_role_arn   = aws_iam_role.eks_node_role.arn
