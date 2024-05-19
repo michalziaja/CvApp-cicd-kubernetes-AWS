@@ -74,27 +74,17 @@ jobs:
       run:
         shell: bash
     steps:      
-      - name: Install kubectl & eksctl
-        uses: appleboy/ssh-action@v1.0.3
-        id: aws_configure  
-        with:
-          host: ${{ needs.terraform.outputs.host_ip }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
-          script: |
-              sudo chmod +x install.sh
-              ./install.sh
-        
+      
       - name: AWS CLI
         id: aws_cli
         run: |
+          
           # echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
-          echo ${{ needs.terraform.outputs.host_ip }}
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          #echo ${{ needs.terraform.outputs.host_ip }}
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem && \
           chmod 400 private_key.pem
           ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "\
+          sudo snap install aws-cli --classic && \
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && \
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && \
           aws configure set region eu-central-1 && \
@@ -102,16 +92,46 @@ jobs:
 
           #rm private_key.pem
       
-      - name: Install alb/helm/argocd
-        id: eks
-        run: |
-          #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-          #chmod 400 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "\
-          aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks && \
-          eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve && \
-          sudo chmod +x install2.sh && \
-          ./install2.sh"
+      
+      - name: Kubectl & eksctl
+        uses: appleboy/ssh-action@v1.0.3
+        id: ec2_configure  
+        with:
+          host: ${{ needs.terraform.outputs.host_ip }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          #env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+          script: |
+              sudo chmod +x install.sh
+              ./install.sh
+        
+      - name: Install Helm/Alb/ArgoCD
+        uses: appleboy/ssh-action@v1.0.3
+        id: eks_configure  
+        with:
+          host: ${{ needs.terraform.outputs.host_ip }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          #env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+          script: |
+              aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks && \
+              eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve && \
+              sudo chmod +x install.sh && \
+              ./install.sh && \
+              kubectl get all -n argocd && \
+              kubectl get all -n kube-system
+      
+      # - name: Install alb/helm/argocd
+      #   id: eks
+      #   run: |
+      #     #echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+      #     #chmod 400 private_key.pem
+      #     ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "\
+          
+      #     sudo chmod +x install2.sh && \
+      #     ./install2.sh"
 
 
 
