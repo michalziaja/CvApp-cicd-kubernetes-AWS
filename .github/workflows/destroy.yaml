@@ -42,7 +42,7 @@ jobs:
   terraform:
     name: "Terraform destroy"
     runs-on: ubuntu-latest
-    needs: delete_eks
+    #needs: delete_eks
     defaults:
       run:
         shell: bash
