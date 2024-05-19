@@ -142,12 +142,15 @@ resource "aws_security_group" "ec2_admin_security_group" {
   name   = "${var.cluster_name}-ec2-admin-sg"
 
   ingress = [
-    for port in [22, 8080, 5000, 80] : {
+    for port in [22, 8080, 5000, 9090, 80] : {
       description      = "TLS from VPC"
       from_port        = port
       to_port          = port
       protocol         = "tcp"
+      ipv6_cidr_blocks = ["::/0"]
       self             = false
+      prefix_list_ids  = []
+      security_groups  = []
       cidr_blocks      = ["0.0.0.0/0"]
     }
   ]
