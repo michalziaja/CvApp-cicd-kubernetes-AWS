@@ -6,7 +6,7 @@ echo "Start Install Script"
 #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
 
 
-#eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
+#aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
 
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
 aws iam create-policy \
@@ -53,7 +53,7 @@ sudo apt install docker.io -y >> /dev/null
 sudo usermod -aG docker ubuntu
 sudo systemctl enable --now docker
 
-
+sleep 20
 export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 export ARGOCD_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 echo $ARGOCD_SERVER
