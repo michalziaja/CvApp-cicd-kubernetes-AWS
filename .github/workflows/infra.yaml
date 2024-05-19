@@ -1,4 +1,4 @@
-name: Infra
+name: IaC - Terraform 
 
 on:
   workflow_dispatch: # Uruchamianie workflow ręcznie
