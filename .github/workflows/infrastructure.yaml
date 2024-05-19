@@ -90,7 +90,7 @@ jobs:
       - name: AWS CLI
         id: aws_cli
         run: |
-          echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
+          # echo "host_ip=${{ needs.terraform.outputs.host_ip }}" >> $GITHUB_OUTPUT
           echo ${{ needs.terraform.outputs.host_ip }}
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 400 private_key.pem
