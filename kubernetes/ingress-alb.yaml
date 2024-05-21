@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: app.cvapplication.xyz
+    - host: * #app.cvapplication.xyz
       http:
         paths:
           - path: /
