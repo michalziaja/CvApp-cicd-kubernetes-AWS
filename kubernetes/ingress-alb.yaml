@@ -20,7 +20,7 @@ spec:
                 name: cvapp-web-svc
                 port:
                   number: 8080
-          - path: /api/v1
+          - path: /api/
             pathType: Prefix
             backend:
               service:
