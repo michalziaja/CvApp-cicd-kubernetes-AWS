@@ -4,11 +4,12 @@ metadata:
   name: cvapp-ingress
   namespace: app
   annotations:
-    #alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
-  ingressClassName: alb
+  #ingressClassName: alb
   rules:
     - host: app.cvapplication.xyz
       http:
@@ -20,7 +21,7 @@ spec:
                 name: cvapp-web-svc
                 port:
                   number: 8080
-          - path: /api/api
+          - path: /api/v1
             pathType: Prefix
             backend:
               service:
