@@ -27,7 +27,7 @@ resource "null_resource" "sleep" {
 }
 
 resource "null_resource" "copy_install_script" {
-  depends_on = [ aws_eks_cluster.eks_cluster, aws_instance.ec2 ]
+  depends_on = [ null_resource.sleep ]
 
   provisioner "file" {
     source      = "${path.module}/install.sh"
