@@ -106,16 +106,17 @@ resource "aws_security_group" "eks_cluster_security_group" {
 
   ingress {
     from_port   = 0
-    to_port     = 0
+    to_port     = 65535
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
   }
+
   egress {
     from_port   = 0
-    to_port     = 0
+    to_port     = 65535
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
   }
+
+
   tags = {
     Name = "${var.cluster_name}/ClusterSharedNodeSecurityGroup"
   }
@@ -127,16 +128,10 @@ resource "aws_security_group" "eks_control_plane_security_group" {
 
   ingress {
     from_port   = 0
-    to_port     = 0
+    to_port     = 65535
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
 
   tags = {
     Name = "${var.cluster_name}/ControlPlaneSecurityGroup"
