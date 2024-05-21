@@ -2,7 +2,6 @@ data "aws_vpc" "default" {
   default = true
 }
 
-
 variable "cluster_name" {
   description = "Name of the EKS cluster"
   type        = string

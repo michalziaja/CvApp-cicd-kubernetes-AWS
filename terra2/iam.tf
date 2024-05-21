@@ -1,12 +1,13 @@
 resource "aws_iam_role" "eks_cluster_role" {
+  name = "eks_cluster_role"
   assume_role_policy = data.aws_iam_policy_document.eks_cluster_assume_role_policy.json
-
   tags = {
     Name = "${var.cluster_name}/ServiceRole"
   }
 }
 
 resource "aws_iam_role" "eks_node_role" {
+  name = "eks_node_role"
   assume_role_policy = data.aws_iam_policy_document.eks_node_assume_role_policy.json
 
   tags = {
