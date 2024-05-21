@@ -116,11 +116,11 @@ jobs:
           port: 22
           #env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |
-              aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks && \
-              eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve && \
-              sudo chmod +x install.sh && \
-              ./install.sh && \
-              kubectl get all -n argocd && \
+              aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
+              eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
+              sudo chmod +x install2.sh
+              ./install2.sh
+              kubectl get all -n argocd
               kubectl get all -n kube-system
       
       # - name: Install alb/helm/argocd
