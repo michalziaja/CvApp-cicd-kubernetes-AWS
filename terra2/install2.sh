@@ -8,7 +8,7 @@ echo "Start Install Script"
 
 #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
 
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/install/iam_policy.json
+curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
@@ -24,15 +24,16 @@ eksctl create iamserviceaccount \
 
 kubectl create ns app
 
-echo "ArgoCD"
-kubectl create ns argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-kubectl get pods -n argocd
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+# echo "ArgoCD"
+# kubectl create ns argocd
+# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
+# kubectl get pods -n argocd
+# kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
 
 sudo snap install helm --classic
 helm repo add eks https://aws.github.io/eks-charts
+helm repo update
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=cvapp-eks --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
 # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
@@ -44,7 +45,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 #echo "Install Grafana"
 #helm install grafana grafana/grafana --namespace monitoring --create-namespace
 
-helm repo update
+
 
 echo "Install Docker"
 sudo apt install docker.io -y >> /dev/null
