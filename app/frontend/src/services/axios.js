@@ -12,7 +12,7 @@ import axios from 'axios'
 
 //const baseURL = $process.env.API_HOST
 
-const baseURL = `${process.env.API_HOST}`
+const baseURL = process.env.API_HOST
 
 const axiosInstance = axios.create({
     baseURL
