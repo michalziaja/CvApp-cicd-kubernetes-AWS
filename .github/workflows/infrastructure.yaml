@@ -120,8 +120,8 @@ jobs:
               eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve
               sudo chmod +x install2.sh
               ./install2.sh
-              kubectl get all -n argocd
-              kubectl get all -n kube-system
+              # kubectl get all -n argocd
+              # kubectl get all -n kube-system
       
       # - name: Install alb/helm/argocd
       #   id: eks
