@@ -67,4 +67,4 @@ spec:
       targetPort: 5000
   selector:
     app: cvapp-api
-  type: ClusterIP
+  #type: ClusterIP
