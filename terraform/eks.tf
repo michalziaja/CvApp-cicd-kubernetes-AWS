@@ -64,6 +64,8 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
   cluster_endpoint_public_access  = true
   iam_role_name = aws_iam_role.eks_role.name
+
+  
 }
 
 resource "aws_eks_node_group" "eks_node_group" {
