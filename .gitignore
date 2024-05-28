@@ -1,11 +1,9 @@
 eks/pvc.yaml
 keys/key
 keys/key.pub
-terraform/.terraform.lock.hcl
-terraform/.terraform
+terraform2/
 project
-terraform/eks
-terraform/eks2
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -160,6 +158,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 ingress.l
-terra2/private_key.pem
+terraform/private_key.pem
 ingress.l
 ingress.l

@@ -1,74 +1,23 @@
-variable "region" {
-  description = "Region"
-  type = string
-  default = "eu-central-1"
+data "aws_vpc" "default" {
+  default = true
 }
 
-variable "vpc-name" {
-  description = "VPC for host"
-  type = string
-  default = "host-vpc"
-}
-
-variable "igw-name" {
-  description = "IG"
-  type = string
-  default = "host-igw"
-}
-
-variable "subnet-name" {
-  description = "Subnet"
-  type = string
-  default = "host-subnet"
-}
-
-variable "rt-name" {
-  description = "Route Table"
-  type = string
-  default = "host-rt"
-}
-
-variable "sg-name" {
-  description = "Security Group"
-  type = string
-  default = "host-sg"
-}
-
-
-variable "iam_role" {
-  description = "IAM Role"
-  type = string
-  default = "host-iam-role"
-}
-
-variable "ami_id" {
-  description = "AMI ID"
+variable "cluster_name" {
+  description = "Name of the EKS cluster"
   type        = string
-  default     = "ami-026c3177c9bd54288" // Canonical, Ubuntu, 22.04 LTS, amd64 jammy image build on 2024-04-11
+  default     = "cvapp-eks"
 }
 
-variable "instance_type" {
+variable "node_group_name" {
+  description = "Name of the EKS node group"
+  type        = string
+  default     = "Node-group-cvapp"
+}
+
+variable "ec2_instance_type" {
   description = "EC2 instance type"
   type        = string
   default     = "t2.micro"
-}
-
-variable "node_instance" {
-  description = "Node instance type"
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "key_name" {
-  description = "EC2 keypair"
-  type        = string
-  default     = "project"
-}
-
-variable "instance_name" {
-  description = "EC2 name"
-  type        = string
-  default     = "host-server"
 }
 
 variable "private_key_path" {
@@ -76,15 +25,13 @@ variable "private_key_path" {
   type        = string
   default     = "./private_key.pem"
 }
-
-variable "cluster_name" {
-  description = "EKS Cluster name"
-  type        = string
-  default     = "cvapp-eks"
+variable "region" {
+  description = "Region"
+  type = string
+  default = "eu-central-1"
 }
-
-variable "eks_vpc_name" {
-  description = "EKS VPC Cluster name"
+variable "key_name" {
+  description = "EC2 keypair"
   type        = string
-  default     = "cvapp-eks-vpc"
+  default     = "project"
 }
