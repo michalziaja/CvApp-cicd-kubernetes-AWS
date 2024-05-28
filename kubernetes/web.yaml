@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: cvapp-web
-          image: michalziaja/cvapp-web:85
+          image: michalziaja/cvapp-web:87
           ports:
             - name: cvapp-web-port
               containerPort: 80
