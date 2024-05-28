@@ -36,9 +36,12 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 echo "Install Prometheus"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 echo "Install Grafana"
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install grafana grafana/grafana --namespace monitoring --create-namespace
+kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
+
 helm repo update
 
 echo "Install Docker"
@@ -49,6 +52,10 @@ sudo systemctl enable --now docker
 sleep 20
 export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 export ARGOCD_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+echo "Argo Server"
 echo $ARGOCD_SERVER
+echo "Argo Pass"
 echo $ARGOCD_PWD
+echo "Grafana Pass"
+kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 echo "Install Script Complete"
