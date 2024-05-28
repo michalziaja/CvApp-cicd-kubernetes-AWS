@@ -36,30 +36,6 @@ jobs:
         run: npm run build
         working-directory: ./app/frontend
 
-  # frontend_sonar-scanner:
-  #   runs-on: ubuntu-latest
-  #   needs: frontend
-  #   defaults:
-  #     run:
-  #       working-directory: ./app/frontend
-  #   steps:
-  #     - name: Setup SonarQube
-  #       uses: warchant/setup-sonar-scanner@v8
-
-  #     - name: Analyze with SonarCloud
-  #       uses: sonarsource/sonarcloud-github-action@master
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #       with:
-  #         projectBaseDir: ./app/frontend
-  #         args: >
-  #           -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-  #           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-  #           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-  #           -Dsonar.sources=src/
-  #           -Dsonar.verbose=true
-
   frontend_sonar-scanner:
     runs-on: ubuntu-latest
     needs: frontend
@@ -117,6 +93,8 @@ jobs:
         format: 'sarif'
         output: 'trivy-results.sarif'
         severity: 'CRITICAL,HIGH'
+
+
 ##################BACKEND########################
 
   backend:
@@ -145,10 +123,28 @@ jobs:
       # - name: Run backend
       #   run: |
       #     uvicorn app.app:app --reload
-         
-  backend_docker:
+  
+  backend_sonar-scanner:
     runs-on: ubuntu-latest
     needs: backend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app/backend
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}       
+  
+  backend_docker:
+    runs-on: ubuntu-latest
+    needs: backend_sonar-scanner
     defaults:
       run:
         working-directory: ./app/backend
