@@ -1,10 +1,11 @@
-FROM node:18-alpine AS build
+FROM node:18.20-alpine AS build
 
 WORKDIR /app
 
 COPY package.json .
 
-RUN npm install -g npm@10.8.0
+RUN npm install -g npm@10.5.0 --include=dev
+
 
 COPY . .
 
