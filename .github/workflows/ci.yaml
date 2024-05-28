@@ -36,24 +36,30 @@ jobs:
         run: npm run build
         working-directory: ./app/frontend
 
-              # Setup sonar-scanner
-      # - name: Setup SonarQube
-      #   uses: warchant/setup-sonar-scanner@v8
+  frontend_sonar-scanner:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app/frontend
+    steps:
+      - name: Setup SonarQube
+        uses: warchant/setup-sonar-scanner@v8
 
-      # - name: Analyze with SonarCloud
-      #   uses: sonarsource/sonarcloud-github-action@master
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   with:
-      #     projectBaseDir: quiz-app
-      #     args: >
-      #       -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-      #       -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-      #       -Dsonar.host.url=${{ secrets.SONAR_URL }}
-      #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-      #       -Dsonar.sources=src/
-      #       -Dsonar.verbose=true
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.sources=src/
+            -Dsonar.verbose=true
+  
   frontend_docker:
     runs-on: ubuntu-latest
     needs: frontend
