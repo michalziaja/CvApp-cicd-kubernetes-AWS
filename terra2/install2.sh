@@ -5,9 +5,6 @@ echo "Start Install Script"
 
 #aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
 
-
-#aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
-
 curl -o iam-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
@@ -24,11 +21,11 @@ eksctl create iamserviceaccount \
 
 kubectl create ns app
 
-# echo "ArgoCD"
-# kubectl create ns argocd
-# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-# kubectl get pods -n argocd
-# kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+echo "ArgoCD"
+kubectl create ns argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
+kubectl get pods -n argocd
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
 
 sudo snap install helm --classic
@@ -36,15 +33,15 @@ helm repo add eks https://aws.github.io/eks-charts
 helm repo update
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=cvapp-eks --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
 # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-
 # helm install ingress-nginx ingress-nginx/ingress-nginx
-# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-# helm repo add grafana https://grafana.github.io/helm-charts
-#echo "Install Prometheus"
-#helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
-#echo "Install Grafana"
-#helm install grafana grafana/grafana --namespace monitoring --create-namespace
 
+
+echo "Install Prometheus"
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+echo "Install Grafana"
+helm repo add grafana https://grafana.github.io/helm-charts
+helm install grafana grafana/grafana --namespace monitoring --create-namespace
 
 
 echo "Install Docker"

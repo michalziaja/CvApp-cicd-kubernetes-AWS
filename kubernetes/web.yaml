@@ -20,7 +20,7 @@ spec:
           image: michalziaja/cvapp-web:12
           ports:
             - name: cvapp-web-port
-              containerPort: 8080
+              containerPort: 80
           env:
             - name: API_HOST
               valueFrom:
@@ -43,9 +43,9 @@ metadata:
 spec:
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 80
+      targetPort: 80
   selector:
     app: cvapp-web
-  #type: LoadBalancer
-  type: ClusterIP
+  type: LoadBalancer
+  #type: ClusterIP
