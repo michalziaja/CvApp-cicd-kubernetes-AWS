@@ -11,8 +11,8 @@ resource "aws_vpc" "eks_vpc" {
 resource "aws_subnet" "public" {
   count                   = 3
   vpc_id                  = aws_vpc.eks_vpc.id
-  cidr_block              = element(["192.168.64.0/19", "192.168.32.0/19"], count.index)
-  availability_zone       = element(["eu-central-1a", "eu-central-1b"], count.index)
+  cidr_block              = element(["192.168.64.0/19", "192.168.32.0/19", "192.168.0.0/19"], count.index)
+  availability_zone       = element(["eu-central-1a", "eu-central-1b", "eu-central-1c"], count.index)
   map_public_ip_on_launch = true
 
   tags = {
@@ -24,8 +24,8 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private" {
   count             = 3
   vpc_id            = aws_vpc.eks_vpc.id
-  cidr_block        = element(["192.168.160.0/19", "192.168.128.0/19"], count.index)
-  availability_zone = element(["eu-central-1a", "eu-central-1b"], count.index)
+  cidr_block        = element(["192.168.160.0/19", "192.168.128.0/19", "192.168.96.0/19"], count.index)
+  availability_zone = element(["eu-central-1a", "eu-central-1b", "eu-central-1c"], count.index)
 
   tags = {
     Name                                 = "${var.cluster_name}/SubnetPrivate${count.index}"
