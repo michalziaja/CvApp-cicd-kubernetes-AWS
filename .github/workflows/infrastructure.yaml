@@ -114,8 +114,6 @@ jobs:
               echo 'Run Install2'
               sudo chmod +x install2.sh
               ./install2.sh
-              echo $ARGOCD_SERVER
-              echo $ARGOCD_PWD
     
       
           
