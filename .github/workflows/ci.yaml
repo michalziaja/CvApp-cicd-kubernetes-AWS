@@ -24,7 +24,7 @@ jobs:
       - name: Install project dependencies 
         working-directory: ./app/frontend
         run: |
-          npm install
+          npm install -g npm@10.8.0
           #npm run lint
           #npm install --save-dev --save-exact prettier
           #npm run prettier
@@ -38,6 +38,7 @@ jobs:
 
   frontend_sonar-scanner:
     runs-on: ubuntu-latest
+    needs: frontend
     defaults:
       run:
         working-directory: ./app/frontend
@@ -62,7 +63,7 @@ jobs:
   
   frontend_docker:
     runs-on: ubuntu-latest
-    needs: frontend
+    needs: frontend_sonar-scanner
     defaults:
       run:
         working-directory: ./app/frontend
