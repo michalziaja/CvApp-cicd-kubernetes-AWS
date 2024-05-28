@@ -23,7 +23,7 @@ kubectl create ns app
 echo "ArgoCD"
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-kubectl get pods -n argocd
+sleep 10
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
 
@@ -34,15 +34,20 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 # helm install ingress-nginx ingress-nginx/ingress-nginx
 kubectl create ns monitoring
 
+sleep 10
 echo "Install Prometheus"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
+
+sleep 10
 kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 sleep 10
 echo "Install Grafana"
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install grafana grafana/grafana -n monitoring
+
+sleep 10
 kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 helm repo update
