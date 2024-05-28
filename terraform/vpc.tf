@@ -9,10 +9,10 @@ resource "aws_vpc" "eks_vpc" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = 3
+  count                   = 2
   vpc_id                  = aws_vpc.eks_vpc.id
-  cidr_block              = element(["192.168.64.0/19", "192.168.32.0/19", "192.168.0.0/19"], count.index)
-  availability_zone       = element(["eu-central-1a", "eu-central-1b", "eu-central-1c"], count.index)
+  cidr_block              = element(["192.168.32.0/19", "192.168.0.0/19"], count.index)
+  availability_zone       = element(["eu-central-1a", "eu-central-1b"], count.index)
   map_public_ip_on_launch = true
 
   tags = {
@@ -22,10 +22,10 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  count             = 3
+  count             = 2
   vpc_id            = aws_vpc.eks_vpc.id
-  cidr_block        = element(["192.168.160.0/19", "192.168.128.0/19", "192.168.96.0/19"], count.index)
-  availability_zone = element(["eu-central-1a", "eu-central-1b", "eu-central-1c"], count.index)
+  cidr_block        = element(["192.168.128.0/19", "192.168.64.0/19"], count.index)
+  availability_zone = element(["eu-central-1a", "eu-central-1b"], count.index)
 
   tags = {
     Name                                 = "${var.cluster_name}/SubnetPrivate${count.index}"
@@ -82,7 +82,7 @@ resource "aws_route" "public_route" {
 }
 
 resource "aws_route" "private_route" {
-  count                  = 3
+  count                  = 2
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_gw.id
