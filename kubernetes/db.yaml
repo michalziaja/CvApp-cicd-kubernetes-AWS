@@ -56,4 +56,4 @@ spec:
   selector:
     app: cvapp-db
   #type: ClusterIP
-  
+  type: NodePort
