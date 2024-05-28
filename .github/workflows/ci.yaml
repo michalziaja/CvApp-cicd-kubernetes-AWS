@@ -24,7 +24,7 @@ jobs:
       - name: Install project dependencies 
         working-directory: ./app/frontend
         run: |
-          npm install -g npm@10.8.0
+          npm install
           #npm run lint
           #npm install --save-dev --save-exact prettier
           #npm run prettier
