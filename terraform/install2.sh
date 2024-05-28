@@ -32,14 +32,16 @@ helm repo add eks https://aws.github.io/eks-charts
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=cvapp-eks --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
 # helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 # helm install ingress-nginx ingress-nginx/ingress-nginx
+kubectl create ns monitoring
 
 echo "Install Prometheus"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace
+helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
 kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
+
 echo "Install Grafana"
 helm repo add grafana https://grafana.github.io/helm-charts
-helm install grafana grafana/grafana --namespace monitoring --create-namespace
+helm install grafana grafana/grafana -n monitoring
 kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 helm repo update
@@ -49,13 +51,14 @@ sudo apt install docker.io -y >> /dev/null
 sudo usermod -aG docker ubuntu
 sudo systemctl enable --now docker
 
-sleep 20
+sleep 10
 export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 export ARGOCD_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
+export GRAFANA_PWD=`kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 -d`
 echo "Argo Server"
 echo $ARGOCD_SERVER
 echo "Argo Pass"
 echo $ARGOCD_PWD
 echo "Grafana Pass"
-kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+echo $GRAFANA_PWD
 echo "Install Script Complete"
