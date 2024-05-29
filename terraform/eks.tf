@@ -26,7 +26,7 @@ resource "aws_eks_node_group" "eks_node_group" {
     max_size     = 1
     min_size     = 1
   }
-  instance_types = ["t2.large"]
+  instance_types = ["t3.xlarge"]
 
   tags = {
     Name = "${var.cluster_name}/NodeGroup"
