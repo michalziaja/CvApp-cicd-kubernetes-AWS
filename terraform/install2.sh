@@ -63,7 +63,7 @@ export GRAFANA_SERVER=`kubectl get svc grafana -n monitoring -o json | jq --raw-
 export GRAFANA_PWD=`kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 -d`
 export PROMETHEUS_SERVER=`kubectl get svc prometheus-kube-prometheus-prometheus -n monitoring -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 
-
+sleep 10
 echo "########## OUTPUTS ##########"
 echo "__________________________________"
 echo "########## HOST IP ##########"
