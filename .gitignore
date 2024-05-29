@@ -5,6 +5,7 @@ terraform2/
 project
 terraform/.terraform
 terraform/.terraform.lock.hcl
+app/backend/app/.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
