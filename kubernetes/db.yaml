@@ -55,5 +55,5 @@ spec:
       targetPort: 27017
   selector:
     app: cvapp-db
-  #type: ClusterIP
-  type: NodePort
+  type: ClusterIP
+  #type: NodePort
