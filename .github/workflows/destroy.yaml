@@ -17,28 +17,28 @@ env:
     EKS_NAME: cvapp-eks
 
 jobs:    
-  delete_eks:
-    name: "Delete EKS cluster"
-    runs-on: ubuntu-latest
+  # delete_eks:
+  #   name: "Delete EKS cluster"
+  #   runs-on: ubuntu-latest
     
     
-    defaults:
-      run:
-        shell: bash
-    steps:      
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:      
       
-      - name: "Delete EKS"
-        uses: appleboy/ssh-action@v1.0.3
-        id: delete_eks
-        with:
-          host: ${{ github.event.inputs.enviroment }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
-          script: |
-              aws iam delete-policy --policy-arn arn:aws:iam::975510455885:policy/AWSLoadBalancerControllerIAMPolicy
-              #kubectl delete ns argocd
-              echo 'Ok'
+  #     - name: "Delete EKS"
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       id: delete_eks
+  #       with:
+  #         host: ${{ github.event.inputs.enviroment }}
+  #         username: ubuntu
+  #         key: ${{ secrets.SSH_PRIVATE_KEY}}
+  #         port: 22
+  #         script: |
+  #             aws iam delete-policy --policy-arn arn:aws:iam::975510455885:policy/AWSLoadBalancerControllerIAMPolicy
+  #             #kubectl delete ns argocd
+  #             echo 'Ok'
   
   terraform:
     name: "Terraform destroy"
