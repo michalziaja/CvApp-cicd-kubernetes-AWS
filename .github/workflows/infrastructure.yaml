@@ -1,6 +1,11 @@
 name: IaC
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
+  # push:
+  #   branches: 
+  #     - main
+  #   paths: 
+  #     - terraform/** 
     
 env:
     # credentials for deployment to AWS
