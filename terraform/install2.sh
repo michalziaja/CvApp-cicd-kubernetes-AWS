@@ -39,15 +39,15 @@ echo "Install Prometheus"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
 
-sleep 10
+sleep 15
 kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
-sleep 10
+
 echo "Install Grafana"
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install grafana grafana/grafana -n monitoring
 
-sleep 10
+sleep 15
 kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
 
 helm repo update
@@ -64,6 +64,9 @@ export ARGOCD_SERVER=`kubectl get svc argocd-server -n argocd -o json | jq --raw
 export ARGOCD_PWD=`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`
 export PROMETHEUS_SERVER=`kubectl get svc prometheus-kube-prometheus-prometheus -n monitoring -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname'`
 
+
+echo "########## HOST IP ##########"
+curl ifconfig.me
 echo "########## ArgoCD Server ##########"
 echo $ARGOCD_SERVER
 echo "########## ArgoCD Pass ##########"
