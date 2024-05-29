@@ -23,7 +23,7 @@ kubectl create ns app
 echo "ArgoCD"
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
-sleep 10
+sleep 15
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
 
@@ -34,7 +34,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 # helm install ingress-nginx ingress-nginx/ingress-nginx
 kubectl create ns monitoring
 
-sleep 10
+sleep 15
 echo "Install Prometheus"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring
@@ -66,15 +66,20 @@ export PROMETHEUS_SERVER=`kubectl get svc prometheus-kube-prometheus-prometheus 
 
 
 echo "########## HOST IP ##########"
-curl ifconfig.me
+curl ifconfig.me; echo
 echo "########## ArgoCD Server ##########"
 echo $ARGOCD_SERVER
+echo
 echo "########## ArgoCD Pass ##########"
 echo $ARGOCD_PWD
+echo
 echo "########## Grafana Server ##########"
 echo $GRAFANA_SERVER
+echo
 echo "########## Grafana Pass ##########"
 echo $GRAFANA_PWD
+echo
 echo "########## Prometheus Server ##########"
 echo $PROMETHEUS_SERVER
+echo
 echo "Install Script Complete"
