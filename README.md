@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## GitHub Actions Workflow 
+=======
+## GitHub Actions Workflow
+>>>>>>> 67bf6ea927d291184c12f3572e02250f3fa61b4f
 
 ### Overview
 
@@ -17,6 +21,7 @@ The `terraform` job is responsible for provisioning the necessary infrastructure
        BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
        AWS_REGION: eu-central-1
        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+<<<<<<< HEAD
 
 These variables are sourced from GitHub secrets to securely manage sensitive information.
 
@@ -100,3 +105,5 @@ Applies the Terraform configuration to create the infrastructure.
         echo "host_ip=$(terraform output -raw host_public_ip)" >> $GITHUB_OUTPUT         
 
 Retrieves the public IP address of the host instance created by Terraform.
+=======
+>>>>>>> 67bf6ea927d291184c12f3572e02250f3fa61b4f
