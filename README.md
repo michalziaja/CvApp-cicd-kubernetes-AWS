@@ -1,6 +1,6 @@
 ## GitHub Actions Workflow
 
-### Overview
+### Infrastructure As Code
 
 The GitHub Actions workflow automates the deployment of an EKS cluster along with the necessary infrastructure. It follows DevOps best practices by using Infrastructure as Code (IaC) with Terraform, ensuring reproducibility and consistency in infrastructure management. The workflow is split into two main jobs: `terraform` and `configure`.
 
