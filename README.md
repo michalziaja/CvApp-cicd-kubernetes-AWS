@@ -192,3 +192,72 @@ Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic
     echo $GRAFANA_PWD
     echo "########## Prometheus Server ##########"
     echo $PROMETHEUS_SERVER
+
+
+
+### Continuous Integration (CI) Pipelines
+
+The CI pipelines automate the testing, building, and deployment processes for both the frontend and backend components of the project. They ensure code quality, security, and efficient delivery to the target environment.
+
+#### Frontend Pipeline
+
+The frontend pipeline focuses on the frontend application, ensuring its stability and security:
+
+1. **Source Code Checkout:**  
+   - Utilizes GitHub Actions to fetch the latest version of the frontend source code.
+
+2. **Dependency Installation and Testing:**  
+   - Sets up the required Node.js environment.
+   - Installs project dependencies.
+   - Executes automated tests to validate the frontend code.
+
+3. **Building:**  
+   - Builds the frontend application to prepare it for deployment.
+
+4. **Static Code Analysis with SonarCloud:**  
+   - Performs static code analysis using SonarCloud to identify potential code quality issues and security vulnerabilities.
+
+5. **Dockerization:**  
+   - Builds a Docker image of the frontend application.
+
+6. **Image Scanning with Trivy:**  
+   - Scans the Docker image for known vulnerabilities using Trivy.
+
+7. **Image Tagging and Pushing:**  
+   - Tags the Docker image with the appropriate version.
+   - Pushes the Docker image to Docker Hub for distribution.
+
+#### Backend Pipeline
+
+The backend pipeline focuses on the backend application, ensuring its reliability and security:
+
+1. **Source Code Checkout:**  
+   - Retrieves the latest version of the backend source code from the repository.
+
+2. **Dependency Installation:**  
+   - Sets up the Python environment.
+   - Installs backend dependencies required for the application.
+
+3. **Static Code Analysis with SonarCloud:**  
+   - Conducts static code analysis using SonarCloud to detect potential code issues and vulnerabilities.
+
+4. **Dockerization:**  
+   - Builds a Docker image of the backend application.
+
+5. **Image Scanning with Trivy:**  
+   - Scans the Docker image for vulnerabilities using Trivy.
+
+6. **Image Tagging and Pushing:**  
+   - Tags the Docker image with the appropriate version.
+   - Pushes the Docker image to Docker Hub for further deployment.
+
+#### Combined Operations
+
+1. **Update Kubernetes Deployment Files:**  
+   - Modifies Kubernetes deployment files to use the newly built Docker images for both frontend and backend components.
+   - Commits the changes back to the repository for version control.
+
+2. **Kubernetes Manifest Scan:**  
+   - Scans the Kubernetes manifest files for potential security vulnerabilities and configuration issues using Snyk.
+
+These CI pipelines provide a streamlined approach to ensure code quality, security, and efficient deployment of both frontend and backend components of the project.
