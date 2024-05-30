@@ -8,10 +8,8 @@ on:
   #     - terraform/** 
     
 env:
-    # credentials for deployment to AWS
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    # S3 bucket for the terraform state. 
     BUCKET_TF_STATE: ${{ secrets.BUCKET_TF }}
     AWS_REGION: eu-central-1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
@@ -98,12 +96,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
-          #env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |
               sudo chmod +x install.sh
               ./install.sh
         
-      - name: Install Helm/Alb/ArgoCD
+      - name: Install Helm/Alb/ArgoCD/Monitoring
         uses: appleboy/ssh-action@v1.0.3
         id: eks_configure  
         with:
@@ -111,7 +108,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port: 22
-          #env: AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
           script: |
               echo 'Connect to cluster'
               aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
