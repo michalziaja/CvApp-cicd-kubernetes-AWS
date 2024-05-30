@@ -119,7 +119,8 @@ The configure job sets up the host instance and configures the EKS cluster. It d
 Job starts only after successful complete `terraform` job.
 
 2. **AWS CLI Setup:**
-    
+   - Configures the AWS CLI on the host instance with necessary credentials, using `GITHUB_OUTPUT` host_ip from previous job.
+
     ```yaml
     - name: AWS CLI
       id: aws_cli
@@ -132,7 +133,7 @@ Job starts only after successful complete `terraform` job.
         aws configure set region eu-central-1 && \
         aws configure list"
 
-Configures the AWS CLI on the host instance with necessary credentials, using `GITHUB_OUTPUT` host_ip from previous job.
+
 
 3. **Install Kubectl & Eksctl:**
     
@@ -150,6 +151,7 @@ Configures the AWS CLI on the host instance with necessary credentials, using `G
         ./install.sh
 
 4. **Install Helm, ALB Controller, ArgoCD, Prometheus, Grafana:**
+   - Connects to the EKS cluster, associates IAM OIDC provider, and installs Helm, ALB controller, ArgoCD, Prometheus and Grafana using the install2.sh script. 
     
     ```yaml
     - name: Install Helm/Alb/ArgoCD
@@ -168,8 +170,7 @@ Configures the AWS CLI on the host instance with necessary credentials, using `G
           sudo chmod +x install2.sh
           ./install2.sh
 
-Connects to the EKS cluster, associates IAM OIDC provider, and installs Helm, ALB controller, ArgoCD, Prometheus and Grafana using the install2.sh script.
-Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic LoadBalancers.
+- Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic LoadBalancers.
     
     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
     kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
