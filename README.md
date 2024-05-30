@@ -4,7 +4,7 @@
 
 The GitHub Actions workflow automates the deployment of an EKS cluster along with the necessary infrastructure. It follows DevOps best practices by using Infrastructure as Code (IaC) with Terraform, ensuring reproducibility and consistency in infrastructure management. The workflow is split into two main jobs: `terraform` and `configure`.
 
-## `terraform` Job
+## `Terraform` Job
 
 The `terraform` job is responsible for provisioning the necessary infrastructure using Terraform. Below are the key steps involved:
 
@@ -101,3 +101,86 @@ Applies the Terraform configuration to create the infrastructure.
 
 Retrieves the public IP address of the host instance created by Terraform.
 
+## `Configure` Job
+The configure job sets up the host instance and configures the EKS cluster. It depends on the terraform job.
+
+1. **Job Configuration:**
+    
+    ```yaml
+    jobs:
+      configure:
+        name: "Configure Host"
+        runs-on: ubuntu-latest
+        needs: terraform
+        defaults:
+          run:
+            shell: bash
+
+Job starts only after successful complete `terraform` job.
+
+2. **AWS CLI Setup:**
+    
+    ```yaml
+    - name: AWS CLI
+      id: aws_cli
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem && \
+        chmod 400 private_key.pem
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@${{ needs.terraform.outputs.host_ip }} "\
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && \
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && \
+        aws configure set region eu-central-1 && \
+        aws configure list"
+
+Configures the AWS CLI on the host instance with necessary credentials, using `GITHUB_OUTPUT` host_ip from previous job.
+
+3. **Install Kubectl & Eksctl:**
+    
+    ```yaml
+    - name: Kubectl & eksctl
+      uses: appleboy/ssh-action@v1.0.3
+      id: ec2_configure  
+      with:
+      host: ${{ needs.terraform.outputs.host_ip }}
+      username: ubuntu
+      key: ${{ secrets.SSH_PRIVATE_KEY}}
+      port: 22
+      script: |
+        sudo chmod +x install.sh
+        ./install.sh
+
+4. **Install Helm, ALB Controller, ArgoCD, Prometheus, Grafana:**
+    
+    ```yaml
+    - name: Install Helm/Alb/ArgoCD
+      uses: appleboy/ssh-action@v1.0.3
+      id: eks_configure  
+      with:
+        host: ${{ needs.terraform.outputs.host_ip }}
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY}}
+        port: 22
+        script: |
+          echo 'Connect to cluster'
+          aws eks update-kubeconfig --region eu-central-1 --name cvapp-eks
+          eksctl utils associate-iam-oidc-provider --region=eu-central-1 --cluster=cvapp-eks --approve     
+          echo 'Run Install2'
+          sudo chmod +x install2.sh
+          ./install2.sh
+
+5. **Output Important Information:**
+    
+    ```yaml
+    echo "########## OUTPUTS ##########"
+    echo "########## HOST IP ##########"
+    wget -qO- ifconfig.me; echo
+    echo "########## ArgoCD Server ##########"
+    echo $ARGOCD_SERVER
+    echo "########## ArgoCD Pass ##########"
+    echo $ARGOCD_PWD
+    echo "########## Grafana Server ##########"
+    echo $GRAFANA_SERVER
+    echo "########## Grafana Pass ##########"
+    echo $GRAFANA_PWD
+    echo "########## Prometheus Server ##########"
+    echo $PROMETHEUS_SERVER
