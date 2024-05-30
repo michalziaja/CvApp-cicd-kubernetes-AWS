@@ -9,6 +9,7 @@ The GitHub Actions workflow automates the deployment of an EKS cluster along wit
 The `terraform` job is responsible for provisioning the necessary infrastructure using Terraform. Below are the key steps involved:
 
 1. **Setting Up Environment Variables:**
+   - These variables are sourced from GitHub secrets to securely manage sensitive information.
 
    ```yaml
    env:
@@ -18,10 +19,11 @@ The `terraform` job is responsible for provisioning the necessary infrastructure
        AWS_REGION: eu-central-1
        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
 
-These variables are sourced from GitHub secrets to securely manage sensitive information.
+
 
 2. **Job Configuration:**
-    
+   - This configures the job to run on the latest Ubuntu runner and sets the working directory to ./terraform.
+
     ```yaml
     jobs:
       terraform:
@@ -34,25 +36,25 @@ These variables are sourced from GitHub secrets to securely manage sensitive inf
             shell: bash
             working-directory: ./terraform
 
-This configures the job to run on the latest Ubuntu runner and sets the working directory to ./terraform.
 
 3. **Checkout Source Code:**
-    
+   - This step checks out the repository code.
+
     ```yaml
     - name: Checkout source code 
       uses: actions/checkout@v4
 
-This step checks out the repository code.
 
 4. **Setup Terraform:**
-    
+   - Installs Terraform on the runner.
+
     ```yaml
     - name: Setup Terraform 
       uses: hashicorp/setup-terraform@v3
 
-Installs Terraform on the runner.
 
 5. **Decode SSH Key:**
+   - Decodes the SSH private key from secrets and sets the appropriate permissions.
 
     ```yaml
     - name: Decode SSH key
@@ -60,9 +62,11 @@ Installs Terraform on the runner.
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 400 private_key.pem
 
-Decodes the SSH private key from secrets and sets the appropriate permissions.
 
 6. **Initialize Terraform, Validate and Plan:**
+   - Initializes Terraform, using a remote backend for storing the state file in an S3 bucket.
+     Validates the Terraform configuration files for syntax errors and other issues.
+     Creates an execution plan to preview the changes that Terraform will apply.
 
     ```yaml
     - name: Terraform Init
@@ -78,34 +82,32 @@ Decodes the SSH private key from secrets and sets the appropriate permissions.
       run: terraform plan -no-color -input=false -out planfile
       continue-on-error: true 
 
-Initializes Terraform, using a remote backend for storing the state file in an S3 bucket.
-Validates the Terraform configuration files for syntax errors and other issues.
-Creates an execution plan to preview the changes that Terraform will apply.
 
 7. **Apply Terraform Configuration:**
-    
+    - Applies the Terraform configuration to create the infrastructure.
+
     ```yaml
     - name: Terraform Apply
       id: apply
       run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
-Applies the Terraform configuration to create the infrastructure.
 
 8. **Get Host Public IP:**
-    
+   - Retrieves the public IP address of the host instance created by Terraform.
+
     ```yaml
     - name: Get host public IP
       id: get_ip
       run: |
         echo "host_ip=$(terraform output -raw host_public_ip)" >> $GITHUB_OUTPUT         
 
-Retrieves the public IP address of the host instance created by Terraform.
 
 ## `Configure` Job
 The configure job sets up the host instance and configures the EKS cluster. It depends on the terraform job.
 
 1. **Job Configuration:**
-    
+   - Job starts only after successful complete `terraform` job.
+
     ```yaml
     jobs:
       configure:
@@ -116,7 +118,6 @@ The configure job sets up the host instance and configures the EKS cluster. It d
           run:
             shell: bash
 
-Job starts only after successful complete `terraform` job.
 
 2. **AWS CLI Setup:**
    - Configures the AWS CLI on the host instance with necessary credentials, using `GITHUB_OUTPUT` host_ip from previous job.
@@ -170,8 +171,9 @@ Job starts only after successful complete `terraform` job.
           sudo chmod +x install2.sh
           ./install2.sh
 
-- Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic LoadBalancers.
+ - Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic LoadBalancers.
     
+    ```bash
     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
     kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
     kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
