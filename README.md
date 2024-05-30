@@ -237,7 +237,7 @@ The CI pipelines automate the testing, building, and deployment processes for bo
         working-directory: ./app/frontend
    
 
-4. **Static Code Analysis with SonarCloud:**  
+3. **Static Code Analysis with SonarCloud:**  
    - Performs static code analysis using SonarCloud to identify potential code quality issues and security vulnerabilities.
     
     ```yaml
@@ -252,7 +252,7 @@ The CI pipelines automate the testing, building, and deployment processes for bo
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-5. **Dockerization:**  
+4. **Dockerization:**  
    - Builds a Docker image of the frontend application.
    - Tags the Docker image with the appropriate version.
    - Pushes the Docker image to Docker Hub for distribution.
@@ -277,7 +277,7 @@ The CI pipelines automate the testing, building, and deployment processes for bo
           docker push michalziaja/cvapp-web:${{ github.run_number }}
 
 
-6. **Image Scanning with Trivy:**  
+5. **Image Scanning with Trivy:**  
    - Scans the Docker image for known vulnerabilities using Trivy.
     
     ```yaml
@@ -336,7 +336,7 @@ The backend pipeline focuses on the backend application, ensuring its reliabilit
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}  
 
 
-5. **Dockerization:**  
+4. **Dockerization:**  
    - Builds a Docker image of the frontend application.
    - Tags the Docker image with the appropriate version.
    - Pushes the Docker image to Docker Hub for distribution.
@@ -360,7 +360,7 @@ The backend pipeline focuses on the backend application, ensuring its reliabilit
         run: |
           docker push michalziaja/cvapp-api:${{ github.run_number }}
 
-6. **Image Scanning with Trivy:**  
+5. **Image Scanning with Trivy:**  
    - Scans the Docker image for known vulnerabilities using Trivy.
 
     ```yaml
