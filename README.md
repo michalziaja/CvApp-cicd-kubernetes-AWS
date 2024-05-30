@@ -204,31 +204,91 @@ The CI pipelines automate the testing, building, and deployment processes for bo
 
 #### Frontend Pipeline
 
-The frontend pipeline focuses on the frontend application, ensuring its stability and security:
-
 1. **Source Code Checkout:**  
    - Utilizes GitHub Actions to fetch the latest version of the frontend source code.
 
-2. **Dependency Installation and Testing:**  
+2. **Dependency Installation, Testing and Building:**  
    - Sets up the required Node.js environment.
    - Installs project dependencies.
    - Executes automated tests to validate the frontend code.
-
-3. **Building:**  
    - Builds the frontend application to prepare it for deployment.
+
+    ```yaml
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Check-out git repository  
+        uses: actions/checkout@v4
+
+      - name: USE NODEJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+
+      - name: Install project dependencies 
+        working-directory: ./app/frontend
+        run: |
+          npm install
+          npm test
+        env:
+          CI: true 
+
+      - name: Build
+        run: npm run build
+        working-directory: ./app/frontend
+   
 
 4. **Static Code Analysis with SonarCloud:**  
    - Performs static code analysis using SonarCloud to identify potential code quality issues and security vulnerabilities.
+    
+    ```yaml
+    - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app/frontend
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
 5. **Dockerization:**  
    - Builds a Docker image of the frontend application.
+   - Tags the Docker image with the appropriate version.
+   - Pushes the Docker image to Docker Hub for distribution.
+    
+    ```yaml
+    - name: Build Docker image
+        run: |
+          docker build -t cvapp-web:latest .    
+
+      - name: Tag Docker image
+        run: |
+          docker tag cvapp-web:latest michalziaja/cvapp-web:${{ github.run_number }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image to Docker Hub
+        run: |
+          docker push michalziaja/cvapp-web:${{ github.run_number }}
+
 
 6. **Image Scanning with Trivy:**  
    - Scans the Docker image for known vulnerabilities using Trivy.
+    
+    ```yaml
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/michalziaja/cvapp-web:${{ github.run_number }}'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
 
-7. **Image Tagging and Pushing:**  
-   - Tags the Docker image with the appropriate version.
-   - Pushes the Docker image to Docker Hub for distribution.
 
 #### Backend Pipeline
 
@@ -241,26 +301,108 @@ The backend pipeline focuses on the backend application, ensuring its reliabilit
    - Sets up the Python environment.
    - Installs backend dependencies required for the application.
 
+    ```yaml
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - name: Check-out git repository  
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+
 3. **Static Code Analysis with SonarCloud:**  
-   - Conducts static code analysis using SonarCloud to detect potential code issues and vulnerabilities.
+   - Performs static code analysis using SonarCloud to identify potential code quality issues and security vulnerabilities.
 
-4. **Dockerization:**  
-   - Builds a Docker image of the backend application.
+    ```yaml
+    - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: app/backend
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}  
 
-5. **Image Scanning with Trivy:**  
-   - Scans the Docker image for vulnerabilities using Trivy.
 
-6. **Image Tagging and Pushing:**  
+5. **Dockerization:**  
+   - Builds a Docker image of the frontend application.
    - Tags the Docker image with the appropriate version.
-   - Pushes the Docker image to Docker Hub for further deployment.
+   - Pushes the Docker image to Docker Hub for distribution.
+    
+    ```yaml
+    - name: Build Docker image
+        run: |
+          docker build -t cvapp-api:latest .    
+
+      - name: Tag Docker image
+        run: |
+          docker tag cvapp-api:latest michalziaja/cvapp-api:${{ github.run_number }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image to Docker Hub
+        run: |
+          docker push michalziaja/cvapp-api:${{ github.run_number }}
+
+6. **Image Scanning with Trivy:**  
+   - Scans the Docker image for known vulnerabilities using Trivy.
+
+    ```yaml
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'docker.io/michalziaja/cvapp-api:${{ github.run_number }}'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
+
 
 #### Combined Operations
 
 1. **Update Kubernetes Deployment Files:**  
+   - Start when Fronend and Backend pipelines are complete.
    - Modifies Kubernetes deployment files to use the newly built Docker images for both frontend and backend components.
    - Commits the changes back to the repository for version control.
+
+    ```yaml
+    - name: Update deployment files
+        run: |
+          git config --global user.email "michalziaja88@gmail.com"
+          git config --global user.name "michalziaja"
+          sed -i 's|image: michalziaja/cvapp-api[^ ]*|image: michalziaja/cvapp-api:${{ github.run_number }}|' kubernetes/api.yaml
+          sed -i 's|image: michalziaja/cvapp-web[^ ]*|image: michalziaja/cvapp-web:${{ github.run_number }}|' kubernetes/web.yaml
+          git add kubernetes/api.yaml
+          git add kubernetes/web.yaml
+          git commit -m "Update images to tag ${{ github.run_number }}"
+          git push origin main
+
 
 2. **Kubernetes Manifest Scan:**  
    - Scans the Kubernetes manifest files for potential security vulnerabilities and configuration issues using Snyk.
 
-These CI pipelines provide a streamlined approach to ensure code quality, security, and efficient deployment of both frontend and backend components of the project.
+    ```yaml
+    - uses: actions/checkout@v4
+      - name: Run Snyk to check Kubernetes manifest file for issues
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          file: kubernetes/
+          args: --severity-threshold=high
+
