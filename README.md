@@ -171,7 +171,6 @@ Configures the AWS CLI on the host instance with necessary credentials, using `G
 Connects to the EKS cluster, associates IAM OIDC provider, and installs Helm, ALB controller, ArgoCD, Prometheus and Grafana using the install2.sh script.
 Services for ArgoCD, Grafana and Prometheus are patched to be exposed by Classic LoadBalancers.
     
-    ```yaml
     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
     kubectl patch svc prometheus-kube-prometheus-prometheus -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
     kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
